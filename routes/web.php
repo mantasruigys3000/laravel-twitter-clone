@@ -16,8 +16,26 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+//users
+Route::get('/users/getuser/{username}','ProfileController@show');
+Route::post('/users/editbio','ProfileController@edit');
+
+
+
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('/post','PostsController@store');
 Route::get('/post','PostsController@index');
+
+Route::get('/profile/{username}',function ($username){
+    return view('profile',['username' => $username]);
+});
+
+Route::get('/uploadImg',function (){
+    return view('upload_image');
+
+});
+
+Route::post('/i/uploadImg','FileController@store');
 

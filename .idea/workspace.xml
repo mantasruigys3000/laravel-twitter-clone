@@ -132,6 +132,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -144,9 +145,34 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1596721478276">
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596795841158">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1596721478276" />
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1596795841158" />
+    <state x="552" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596809065566">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="552" y="325" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1596809065566" />
+    <state x="1007" y="195" key="NewPhpClassDialog" timestamp="1597060452813">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="1007" y="195" key="NewPhpClassDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1597060452813" />
+    <state x="659" y="451" key="NewPhpFileDialog" timestamp="1596792659188">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="659" y="451" key="NewPhpFileDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1596792659188" />
+    <state x="341" y="164" key="SettingsEditor" timestamp="1596792143988">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="341" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1596792143988" />
+    <state width="600" height="440" key="javadoc.popup" timestamp="1597049798376">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="600" height="440" key="javadoc.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1597049798376" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1597058364459">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1597058364459" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.23.1680.947@0.23.1680.947" timestamp="1596786541426" />
   </component>
 </project>
