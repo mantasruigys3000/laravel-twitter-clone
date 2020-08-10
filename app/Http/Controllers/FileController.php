@@ -44,7 +44,7 @@ class FileController extends Controller
         $file = new File();
         $gotFile = $request->file('file');
         $path = '/images/' . $gotFile->getFilename() .'.' . $gotFile->extension();
-        $gotFile->storeAs('/images',$path);
+        $gotFile->storeAs('public/images',$gotFile->getFilename() .'.' . $gotFile->extension());
         $file->url = public_path($path);
         $file->link = $path;
 

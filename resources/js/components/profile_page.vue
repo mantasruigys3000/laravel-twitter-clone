@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img   alt="" :src=" this.user.profile_picture ">
+        <img   alt="" :src=" this.user.profile_picture_link ">
         <div>profile template {{this.user.username }}</div>
         <button @click="editing = true"> Edit Profile</button>
         <p>{{this.user.bio}}</p>
@@ -63,17 +63,24 @@ export default {
                 console.log(rsp.data);
 
                this.user = rsp.data.data;
-               this.user.profile_picture = (this.user.profile_picture !== null)? this.user.profile_picture: '/images/default_pp.png';
+
 
             })
         },
 
 
         editBio(){
-            axios.post('/users/editbio',this.profileObj).then(rsp =>{
-                console.log(rsp);
+            let data = new FormData();
+            data.append('bio',this.profileObj.bio);
+            data.append('file',this.profileObj.pic);
+            axios.post('/i/uploadImg',data).then(rsp=>{
+                data.append('pic',rsp.data.id)
+                return axios.post('/users/editbio',data)
+            }).then(rsp=>{
 
             })
+
+
         },
 
         changed(event){

@@ -2081,13 +2081,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/users/getuser/' + this.usr).then(function (rsp) {
         console.log(rsp.data);
         _this.user = rsp.data.data;
-        _this.user.profile_picture = _this.user.profile_picture !== null ? _this.user.profile_picture : '/images/default_pp.png';
       });
     },
     editBio: function editBio() {
-      axios.post('/users/editbio', this.profileObj).then(function (rsp) {
-        console.log(rsp);
-      });
+      var data = new FormData();
+      data.append('bio', this.profileObj.bio);
+      data.append('file', this.profileObj.pic);
+      axios.post('/i/uploadImg', data).then(function (rsp) {
+        data.append('pic', rsp.data.id);
+        return axios.post('/users/editbio', data);
+      }).then(function (rsp) {});
     },
     changed: function changed(event) {
       this.profileObj.pic = event.target.files[0];
@@ -37885,7 +37888,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("img", { attrs: { alt: "", src: this.user.profile_picture } }),
+    _c("img", { attrs: { alt: "", src: this.user.profile_picture_link } }),
     _vm._v(" "),
     _c("div", [_vm._v("profile template " + _vm._s(this.user.username))]),
     _vm._v(" "),

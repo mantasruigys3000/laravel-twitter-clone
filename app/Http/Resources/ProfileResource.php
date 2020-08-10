@@ -14,11 +14,14 @@ class ProfileResource extends JsonResource
      */
     public function toArray($request)
     {
-        $pp = (($this->profile_picture)? $this->profile_picture->link : null);
+        //dd($this->picture);
+
+
+
         return [
             'username' => $this->username,
             'bio' => $this->bio,
-            'profile_picture' => $pp,
+            'profile_picture_link' => $this->picture->link,
 
 
 

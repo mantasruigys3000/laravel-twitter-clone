@@ -73,6 +73,7 @@ class ProfileController extends Controller
 
         $prof = auth()->user()->profile;
         $prof->bio = $request->get('bio');
+        $prof->profile_picture = $request->get('pic');
         $prof->save();
 
 
