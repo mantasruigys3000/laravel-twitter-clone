@@ -7,12 +7,7 @@
         </form>
     </div>
 
-    <div v-for="post in posts">
-        <div>
-            <p>{{post.content}}</p>
-            <p> posted by {{post.username}}</p>
-        </div>
-    </div>
+
 </div>
 </template>
 
@@ -37,14 +32,9 @@ export default {
                 this.posts.unshift(rsp.data.data);
 
             })
-        }
-        ,
-        getPosts(){
-            axios.get('/post').then(rsp =>{
-                this.posts = rsp.data.data;
+        },
 
-            })
-        }
+
     },
 
     mounted() {

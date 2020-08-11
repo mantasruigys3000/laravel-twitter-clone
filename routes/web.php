@@ -26,7 +26,7 @@ Route::post('/users/editbio','ProfileController@edit');
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('/post','PostsController@store');
-Route::get('/post','PostsController@index');
+Route::post('/posts','PostsController@index');
 
 Route::get('/profile/{username}',function ($username){
     return view('profile',['username' => $username]);

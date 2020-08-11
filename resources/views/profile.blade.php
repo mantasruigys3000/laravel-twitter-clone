@@ -2,6 +2,6 @@
 @extends('layouts.app')
 
 @section('content')
-<userprofile usr="{{$username}}"></userprofile>
+<userprofile usr="{{$username}}" auth_usr="{{auth()->user()}}"></userprofile>
 @endsection('content')
 

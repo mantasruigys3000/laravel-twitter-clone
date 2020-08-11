@@ -10,7 +10,7 @@ class Post extends Model
     protected $appends = ['ownerName'];
 
     public function user(){
-        return $this->belongsTo(User::Class);
+        return $this->belongsTo(Profile::Class);
     }
 
 

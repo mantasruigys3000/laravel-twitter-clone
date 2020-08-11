@@ -1,9 +1,18 @@
 <template>
-    <div>
-        <img   alt="" :src=" this.user.profile_picture_link ">
-        <div>profile template {{this.user.username }}</div>
-        <button @click="editing = true"> Edit Profile</button>
-        <p>{{this.user.bio}}</p>
+    <div class="container mx-auto font-sans font-bold">
+        <img  class="object-cover h-48 w-48 mx-auto rounded-full border-red-500 border-solid border-2" alt="" :src=" this.user.profile_picture_link ">
+        <div class="mx-auto text-center  w-64  px4 my-4">
+
+            <h1 class="mx-auto text-left my-4 bg-red-200 border-red-500 border-solid border-2 bg-red-200 " > {{this.user.username }}</h1>
+            <p class="mx-auto text-center h-64 border-red-500 border-solid border-2 bg-red-200">{{this.user.bio}}</p>
+            <button @click="" class="hover:bg-red-800  bg-red-500 p-3 "> Follow</button>
+            <button v-if="auth_user !== '' " @click="editing = true" class="text-red-500 hover:text-red-800 "> Edit Profile</button>
+
+        </div>
+
+        <postfeed class="mx-auto object-center" type="profile" :profilearr="this.user.id"></postfeed>
+
+
 
 
 
@@ -35,6 +44,7 @@ export default {
     data(){
         return{
             user: null,
+
             editing: false,
             profileObj:{
                 bio: null,
@@ -49,7 +59,8 @@ export default {
         usr:{
             required: true,
             type: String,
-        }
+        },
+        auth_user: null,
     },
 
     mounted() {

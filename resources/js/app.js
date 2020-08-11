@@ -24,6 +24,7 @@ Vue.component('post-input', require('./components/Post_input.vue').default);
 Vue.component('user-navbar', require('./components/User_Navbar.vue').default);
 Vue.component('upload_image', require('./components/upload_image.vue').default);
 Vue.component('userprofile', require('./components/profile_page.vue').default);
+Vue.component('postfeed', require('./components/postfeed.vue').default);
 
 
 /**

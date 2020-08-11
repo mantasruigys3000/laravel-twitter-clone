@@ -14,11 +14,14 @@ class PostResource extends JsonResource
      */
     public function toArray($request)
     {
+        $pp = ($this->user->picture == null)? '/images/default_pp.png': $this->user->picture->link;
         return [
             'id' => $this->id,
             'content' => $this->content,
             'created_at' => $this->created_at,
             'username'=> $this->user->username,
+            'picture' => $pp,
+
 
 
         ];

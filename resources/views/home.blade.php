@@ -7,5 +7,6 @@
 
     <div id="">
         <post-input></post-input>
+        <postfeed type="dashboard" profilearr="{{auth()->user()->profile->follows}}"> </postfeed>
     </div>
 @endsection
