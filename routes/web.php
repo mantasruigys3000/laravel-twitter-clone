@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/users/getuser/{username}','ProfileController@show');
 Route::post('/users/editbio','ProfileController@edit');
 
+Route::post('/users/isfollowing','ProfileController@isFollowing');
 
 
 

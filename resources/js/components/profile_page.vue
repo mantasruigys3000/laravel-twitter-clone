@@ -5,7 +5,7 @@
 
             <h1 class="mx-auto text-left my-4 bg-red-200 border-red-500 border-solid border-2 bg-red-200 " > {{this.user.username }}</h1>
             <p class="mx-auto text-center h-64 border-red-500 border-solid border-2 bg-red-200">{{this.user.bio}}</p>
-            <button @click="" class="hover:bg-red-800  bg-red-500 p-3 "> Follow</button>
+            <button @click="" class="hover:bg-red-800  bg-red-500 p-3 "> {{follow}}</button>
             <button v-if="auth_user !== '' " @click="editing = true" class="text-red-500 hover:text-red-800 "> Edit Profile</button>
 
         </div>
@@ -44,7 +44,7 @@ export default {
     data(){
         return{
             user: null,
-
+            follow: false,
             editing: false,
             profileObj:{
                 bio: null,
@@ -77,6 +77,10 @@ export default {
 
 
             })
+
+            
+
+
         },
 
 

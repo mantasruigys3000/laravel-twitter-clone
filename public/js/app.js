@@ -2130,6 +2130,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       user: null,
+      follow: false,
       editing: false,
       profileObj: {
         bio: null,
@@ -37960,7 +37961,9 @@ var render = function() {
             }),
             _vm._v(" "),
             _c("div", {}, [
-              _c("h1", [_vm._v(_vm._s(post.username))]),
+              _c("a", { attrs: { href: "/profile/" + post.username } }, [
+                _vm._v(_vm._s(post.username))
+              ]),
               _vm._v(" "),
               _c("p", [_vm._v(_vm._s(post.content))])
             ])
@@ -38028,7 +38031,7 @@ var render = function() {
             staticClass: "hover:bg-red-800  bg-red-500 p-3 ",
             on: { click: function($event) {} }
           },
-          [_vm._v(" Follow")]
+          [_vm._v(" " + _vm._s(_vm.follow))]
         ),
         _vm._v(" "),
         _vm.auth_user !== ""

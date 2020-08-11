@@ -4,7 +4,7 @@
             <div class="flex flex-row align-middle  items-center mb-8">
                 <img class=" rounded-full w-16 h-16" :src="post.picture" alt="">
                 <div class="">
-                    <h1>{{ post.username }}</h1>
+                    <a :href=" '/profile/'+post.username ">{{ post.username }}</a>
                     <p>{{ post.content }}</p>
 
                 </div>

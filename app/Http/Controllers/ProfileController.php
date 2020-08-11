@@ -49,13 +49,12 @@ class ProfileController extends Controller
      * @param \App\Profile $profile
      * @return ProfileResource
      */
-    public function show($username,Profile $profile)
+    public function show($username, Profile $profile)
     {
 
 
-        $prof = Profile::where('username',$username)->FirstOrFail();
+        $prof = Profile::where('username', $username)->FirstOrFail();
         return new ProfileResource($prof);
-
 
 
     }
@@ -103,5 +102,14 @@ class ProfileController extends Controller
     public function destroy(Profile $profile)
     {
         //
+    }
+
+    public function isFollowing(Request $request)
+    {
+        $prof = $request->get('profile');
+        $follower = $request->get('follower');
+
+        return ($prof->follows->contains($follower));
+
     }
 }
