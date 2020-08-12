@@ -36,6 +36,16 @@ class FollowController extends Controller
     public function store(Request $request)
     {
         //
+        $follow = new Follow();
+
+        $follow->profile_id = auth()->user()->profile->id;
+        $follow->follow_id = $request->get('following')['id'];
+        $follow->save();
+
+        return  response()->json($follow);
+
+
+
     }
 
     /**
@@ -78,8 +88,16 @@ class FollowController extends Controller
      * @param  \App\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Follow $follow)
+    public function destroy(Request $request)
     {
         //
+        //$follow = auth()->user()->profile->follows()->where('follow_id',$request->get('following')['id'])->first();
+        $follow = Follow::where(['profile_id' => auth()->user()->profile->id ,'follow_id' => $request->get('following')['id']])->FirstOrFail();
+
+        //dd($follow);
+
+        $follow->delete();
+        return($follow);
+
     }
 }

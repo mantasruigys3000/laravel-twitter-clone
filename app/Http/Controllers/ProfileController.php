@@ -106,10 +106,11 @@ class ProfileController extends Controller
 
     public function isFollowing(Request $request)
     {
-        $prof = $request->get('profile');
-        $follower = $request->get('follower');
-
-        return ($prof->follows->contains($follower));
+        $prof = $request->get('following');
+        //dd();
+        //dd(auth()->user()->profile->follows->where('follow_id',$prof['id']));
+        //return (auth()->user()->profile->follows->where('follow_id',$prof['id'])->exists());
+        return response()->json((auth()->user()->profile->follows->contains($prof['id'])));
 
     }
 }

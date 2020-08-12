@@ -2130,7 +2130,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       user: null,
-      follow: false,
+      isFollowing: false,
       editing: false,
       profileObj: {
         bio: null,
@@ -2155,7 +2155,39 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/users/getuser/' + this.usr).then(function (rsp) {
         console.log(rsp.data);
         _this.user = rsp.data.data;
+      }).then(function (r) {
+        _this.getFollowing();
       });
+    },
+    getFollowing: function getFollowing() {
+      var _this2 = this;
+
+      if (this.auth_user !== '') {
+        axios.post('/users/isfollowing', {
+          'following': this.user
+        }).then(function (rsp) {
+          _this2.isFollowing = rsp.data;
+        });
+      }
+    },
+    followButton: function followButton() {
+      if (this.isFollowing) {
+        //unfollow
+        axios.post('/users/stopfollowing', {
+          'following': this.user
+        }).then(function (rsp) {
+          console.log(rsp);
+        });
+        this.isFollowing = false;
+      } else {
+        //follow
+        axios.post('/users/startfollowing', {
+          'following': this.user
+        }).then(function (rsp) {
+          console.log(rsp);
+        });
+        this.isFollowing = true;
+      }
     },
     editBio: function editBio() {
       var data = new FormData();
@@ -2169,7 +2201,8 @@ __webpack_require__.r(__webpack_exports__);
     changed: function changed(event) {
       this.profileObj.pic = event.target.files[0];
     }
-  }
+  },
+  computed: {}
 });
 
 /***/ }),
@@ -38029,9 +38062,13 @@ var render = function() {
           "button",
           {
             staticClass: "hover:bg-red-800  bg-red-500 p-3 ",
-            on: { click: function($event) {} }
+            on: {
+              click: function($event) {
+                return _vm.followButton()
+              }
+            }
           },
-          [_vm._v(" " + _vm._s(_vm.follow))]
+          [_vm._v(" " + _vm._s(_vm.isFollowing ? "Unfollow" : "Follow"))]
         ),
         _vm._v(" "),
         _vm.auth_user !== ""

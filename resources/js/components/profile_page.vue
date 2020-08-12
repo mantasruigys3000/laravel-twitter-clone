@@ -5,7 +5,7 @@
 
             <h1 class="mx-auto text-left my-4 bg-red-200 border-red-500 border-solid border-2 bg-red-200 " > {{this.user.username }}</h1>
             <p class="mx-auto text-center h-64 border-red-500 border-solid border-2 bg-red-200">{{this.user.bio}}</p>
-            <button @click="" class="hover:bg-red-800  bg-red-500 p-3 "> {{follow}}</button>
+            <button @click="followButton()" class="hover:bg-red-800  bg-red-500 p-3 "> {{ (isFollowing)? "Unfollow": "Follow" }}</button>
             <button v-if="auth_user !== '' " @click="editing = true" class="text-red-500 hover:text-red-800 "> Edit Profile</button>
 
         </div>
@@ -44,7 +44,7 @@ export default {
     data(){
         return{
             user: null,
-            follow: false,
+            isFollowing: false,
             editing: false,
             profileObj:{
                 bio: null,
@@ -61,6 +61,7 @@ export default {
             type: String,
         },
         auth_user: null,
+
     },
 
     mounted() {
@@ -76,12 +77,44 @@ export default {
                this.user = rsp.data.data;
 
 
-            })
-
-            
+            }).then(r =>{
+                this.getFollowing()
+            });
 
 
         },
+
+
+        getFollowing(){
+            if(this.auth_user !== '') {
+                axios.post('/users/isfollowing', {'following': this.user}).then(rsp => {
+                    this.isFollowing =  rsp.data;
+                })
+            }
+        },
+
+
+        followButton(){
+            if(this.isFollowing){
+                //unfollow
+                axios.post('/users/stopfollowing',{'following': this.user}).then(rsp=>{
+                    console.log(rsp);
+                })
+                this.isFollowing = false;
+            } else{
+                //follow
+                axios.post('/users/startfollowing',{'following': this.user}).then(rsp=>{
+                    console.log(rsp);
+                })
+                this.isFollowing = true;
+                
+            }
+
+
+
+
+        },
+
 
 
         editBio(){
@@ -105,6 +138,11 @@ export default {
 
 
     },
+
+    computed:{
+
+    }
+
 
 
 

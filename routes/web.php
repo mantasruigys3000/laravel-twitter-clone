@@ -20,7 +20,11 @@ Auth::routes();
 Route::get('/users/getuser/{username}','ProfileController@show');
 Route::post('/users/editbio','ProfileController@edit');
 
+//follows
 Route::post('/users/isfollowing','ProfileController@isFollowing');
+Route::post('/users/startfollowing','FollowController@store');
+Route::post('/users/stopfollowing','FollowController@destroy');
+
 
 
 
