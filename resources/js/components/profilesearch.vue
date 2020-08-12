@@ -4,7 +4,7 @@
         <input type="text" v-model="search" @change="typed">
         <p>{{this.searchLen}}</p>
         <div v-for="profile in this.profiles">
-            <p>{{profile.username}}</p>
+            <a :href=" '/profile/' + profile.username ">{{profile.username}}</a>
         </div>
     </div>
 </div>

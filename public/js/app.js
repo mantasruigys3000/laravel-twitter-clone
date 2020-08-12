@@ -2030,6 +2030,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "postfeed",
   data: function data() {
@@ -2068,6 +2070,11 @@ __webpack_require__.r(__webpack_exports__);
           _this.posts = rsp.data.data;
         });
       }
+    },
+    likePost: function likePost(post) {
+      axios.post('/posts/like/' + post.id).then(function (rsp) {
+        console.log(rsp.data);
+      });
     }
   },
   mounted: function mounted() {
@@ -38053,7 +38060,22 @@ var render = function() {
                 _vm._v(_vm._s(post.username))
               ]),
               _vm._v(" "),
-              _c("p", [_vm._v(_vm._s(post.content))])
+              _c("p", [_vm._v(_vm._s(post.content))]),
+              _vm._v(" "),
+              _c("p", [_vm._v("Likes: " + _vm._s(post.likescount))]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "text-green-500",
+                  on: {
+                    click: function($event) {
+                      return _vm.likePost(post)
+                    }
+                  }
+                },
+                [_vm._v(" LIKE ")]
+              )
             ])
           ]
         )
@@ -38287,7 +38309,11 @@ var render = function() {
         _c("p", [_vm._v(_vm._s(this.searchLen))]),
         _vm._v(" "),
         _vm._l(this.profiles, function(profile) {
-          return _c("div", [_c("p", [_vm._v(_vm._s(profile.username))])])
+          return _c("div", [
+            _c("a", { attrs: { href: "/profile/" + profile.username } }, [
+              _vm._v(_vm._s(profile.username))
+            ])
+          ])
         })
       ],
       2

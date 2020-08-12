@@ -6,6 +6,8 @@
                 <div class="">
                     <a :href=" '/profile/'+post.username ">{{ post.username }}</a>
                     <p>{{ post.content }}</p>
+                    <p>Likes: {{post.likescount}}</p>
+                    <button class="text-green-500" @click="likePost(post)"> LIKE </button>
 
                 </div>
 
@@ -66,6 +68,14 @@ export default {
                 })
 
             }
+        },
+
+
+        likePost(post){
+            axios.post('/posts/like/' + post.id).then(rsp=>{
+                console.log(rsp.data);
+
+            })
         }
     },
 

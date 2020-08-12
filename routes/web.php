@@ -26,6 +26,10 @@ Route::post('/users/isfollowing','ProfileController@isFollowing');
 Route::post('/users/startfollowing','FollowController@store');
 Route::post('/users/stopfollowing','FollowController@destroy');
 
+//likes
+
+Route::post('/posts/like/{postid}','LikeController@store');
+
 
 
 

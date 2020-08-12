@@ -23,6 +23,12 @@ class Profile extends Model
 
     }
 
+    public function likes(){
+        return $this->belongsToMany(Post::class,'likes','profile_id','post_id');
+    }
+
+
+
 
 
 }
