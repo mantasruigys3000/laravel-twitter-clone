@@ -16,9 +16,12 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        //dd(Profile::where('username','like','%'.$request->get('search').'%')->get());
+        return ProfileResource::collection(Profile::where('username','like','%'.$request->get('search').'%')->get());
+
     }
 
     /**

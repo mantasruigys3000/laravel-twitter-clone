@@ -107,7 +107,7 @@ export default {
                     console.log(rsp);
                 })
                 this.isFollowing = true;
-                
+
             }
 
 

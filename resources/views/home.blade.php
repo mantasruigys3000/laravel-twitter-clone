@@ -6,6 +6,7 @@
     <user-navbar></user-navbar>
 
     <div id="">
+        <profilesearch></profilesearch>
         <post-input></post-input>
         <postfeed type="dashboard" profilearr="{{auth()->user()->profile->follows}}"> </postfeed>
     </div>

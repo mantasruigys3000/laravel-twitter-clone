@@ -19,6 +19,7 @@ Auth::routes();
 //users
 Route::get('/users/getuser/{username}','ProfileController@show');
 Route::post('/users/editbio','ProfileController@edit');
+Route::post('/users/profiles','ProfileController@index');
 
 //follows
 Route::post('/users/isfollowing','ProfileController@isFollowing');
