@@ -7,7 +7,7 @@
                     <a :href=" '/profile/'+post.username ">{{ post.username }}</a>
                     <p>{{ post.content }}</p>
                     <p>Likes: {{post.likescount}}</p>
-                    <button class="text-green-500" @click="likePost(post)"> LIKE </button>
+                    <button class="text-green-500" @click="likePost(post)"> {{(post.isLiked)? 'Unlike': 'Like'}} </button>
 
                 </div>
 
@@ -66,6 +66,8 @@ export default {
                     this.posts = rsp.data.data;
 
                 })
+
+
 
             }
         },

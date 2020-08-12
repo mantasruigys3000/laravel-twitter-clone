@@ -15,6 +15,11 @@ class PostResource extends JsonResource
     public function toArray($request)
     {
         $pp = ($this->user->picture == null)? '/images/default_pp.png': $this->user->picture->link;
+        $isLiked = false;
+        if(auth()->user() != null){
+            $isLiked =  auth()->user()->profile->likes->contains($this->id);
+        }
+
         return [
             'id' => $this->id,
             'content' => $this->content,
@@ -22,6 +27,8 @@ class PostResource extends JsonResource
             'username'=> $this->user->username,
             'picture' => $pp,
             'likescount' => $this->likesCount,
+            'isLiked' => $isLiked,
+
 
 
 

@@ -36,7 +36,7 @@ class LikeController extends Controller
     public function store($post)
     {
         $like = new Like();
-        if(auth()->user()->profile->likes->contains($post)){
+        if($this->isLiked($post)){
             $like = Like::where(['profile_id' => auth()->user()->profile->id,'post_id'=>$post])->FirstOrFail();
             //dd($like);
             $like->delete();
@@ -62,6 +62,11 @@ class LikeController extends Controller
     {
         //
     }
+
+    public function isLiked($post){
+        return auth()->user()->profile->likes->contains($post);
+    }
+
 
     /**
      * Show the form for editing the specified resource.

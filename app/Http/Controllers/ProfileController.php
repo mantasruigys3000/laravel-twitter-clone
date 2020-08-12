@@ -109,6 +109,9 @@ class ProfileController extends Controller
 
     public function isFollowing(Request $request)
     {
+        if(auth()->user() == null){
+            return false;
+        }
         $prof = $request->get('following');
         //dd();
         //dd(auth()->user()->profile->follows->where('follow_id',$prof['id']));

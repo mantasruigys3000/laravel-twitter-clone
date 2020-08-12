@@ -38074,7 +38074,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v(" LIKE ")]
+                [_vm._v(" " + _vm._s(post.isLiked ? "Unlike" : "Like") + " ")]
               )
             ])
           ]
