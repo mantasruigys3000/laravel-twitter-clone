@@ -24,6 +24,8 @@ class ProfileResource extends JsonResource
             'bio' => $this->bio,
             'profile_picture_link' => $pp,
             'id' => $this->id,
+            'userId'=> $this->user->id,
+
 
 
 

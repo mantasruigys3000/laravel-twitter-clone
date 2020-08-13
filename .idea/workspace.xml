@@ -145,10 +145,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597232192574">
+    <state x="304" y="186" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597319530591">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1597232192574" />
+    <state x="304" y="186" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1597319530591" />
     <state x="552" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596809065566">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -169,10 +169,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="600" height="440" key="javadoc.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1597049798376" />
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1597225158749">
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1597333821205">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1597225158749" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1597333821205" />
     <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.23.1680.947@0.23.1680.947" timestamp="1596786541426" />
   </component>
 </project>

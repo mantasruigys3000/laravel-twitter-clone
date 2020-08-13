@@ -27,6 +27,10 @@ class Profile extends Model
         return $this->belongsToMany(Post::class,'likes','profile_id','post_id');
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 
 
 

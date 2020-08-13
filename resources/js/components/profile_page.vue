@@ -1,23 +1,22 @@
 <template>
-    <div class="container mx-auto font-sans font-bold">
-        <img  class="object-cover h-48 w-48 mx-auto rounded-full border-red-500 border-solid border-2" alt="" :src=" this.user.profile_picture_link ">
-        <div class="mx-auto text-center  w-64  px4 my-4">
+    <div class="   font-sans font-bold">
 
-            <h1 class="mx-auto text-left my-4 bg-red-200 border-red-500 border-solid border-2 bg-red-200 " > {{this.user.username }}</h1>
-            <p class="mx-auto text-center h-64 border-red-500 border-solid border-2 bg-red-200">{{this.user.bio}}</p>
-            <button @click="followButton()" class="hover:bg-red-800  bg-red-500 p-3 "> {{ (isFollowing)? "Unfollow": "Follow" }}</button>
-            <button v-if="auth_user !== '' " @click="editing = true" class="text-red-500 hover:text-red-800 "> Edit Profile</button>
+            <div class="  bg-red-400 w-full  text-white shadow-xl py-4  ">
+                <img  class=" align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 " alt="" :src=" this.user.profile_picture_link ">
 
-        </div>
+                <div class="mx-auto text-center  w-64  px4 my-4">
+                    <button v-if="!isThisAuth" @click="followButton()" class="hover:bg-white rounded-full bg-gray-200  p-3 text-red-400 "> {{ (isFollowing)? "Unfollow": "Follow" }}</button>
+                    <button v-if=" isThisAuth" @click="editing = true" class="hover:bg-white rounded-full bg-gray-200  p-3 text-red-400 "> Edit Profile</button>
 
-        <postfeed class="mx-auto object-center" type="profile" :profilearr="this.user.id"></postfeed>
-
+                    <h1 class="mx-auto text-center my-4      " > <i> @{{this.user.username }}</i></h1>
+                    <p class="mx-auto text-center h-4 text-white mb-8 ">{{this.user.bio}}</p>
 
 
+                </div>
+            </div>
 
-
-        <div v-if="editing" class="absolute bg-black inset-0 opacity-50 z-40">
-            <div class="z-30 bg-white relative mx-auto m-auto  w-full max-w-md text-black opacity-100">
+        <div v-if="editing" class="fixed inset-0  overflow-hidden">
+            <div class="z-50 opacity-100 bg-white rounded-md  vertical-align-middle relative mx-auto m-auto inset-y-50 w-full max-w-md text-black opacity-100">
                 THIS IS MODAL
                 <form @submit.prevent="editBio()" class="m-5">
                     <label for="pp">Profile Picture</label>
@@ -31,6 +30,19 @@
                 </form>
             </div>
         </div>
+
+
+
+
+
+
+        <postfeed class="mx-auto mt-4" type="profile" :profilearr="this.user.id"></postfeed>
+
+
+
+
+
+
     </div>
 
 </template>
@@ -46,6 +58,8 @@ export default {
             user: null,
             isFollowing: false,
             editing: false,
+            isAuth: false,
+            isThisAuth: false,
             profileObj:{
                 bio: null,
                 pic: null
@@ -60,12 +74,13 @@ export default {
             required: true,
             type: String,
         },
-        auth_user: null,
+        auth_usr: null,
 
     },
 
     mounted() {
         this.getUser();
+
 
     },
 
@@ -79,6 +94,8 @@ export default {
 
             }).then(r =>{
                 this.getFollowing()
+                this.isAuth = this.auth_usr !== "";
+                this.isThisAuth = this.user.userId === JSON.parse(this.auth_usr).id
             });
 
 

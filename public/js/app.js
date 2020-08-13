@@ -2032,6 +2032,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "postfeed",
   data: function data() {
@@ -2072,6 +2087,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     likePost: function likePost(post) {
+      var notif = new FormData();
+      var content = post.username + " liked your post";
+      notif.append('profile_id', post.posterId);
+      notif.append('content', content);
+      notif.append('link', '/profile/' + post.username);
+      notif.append('type', 'like');
+
+      if (!post.isLiked) {
+        axios.post('/notification/create', notif).then(function (rsp) {
+          console.log(rsp);
+        });
+      }
+
       axios.post('/posts/like/' + post.id).then(function (rsp) {
         console.log(rsp.data);
       });
@@ -2132,6 +2160,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile Page",
   data: function data() {
@@ -2139,6 +2179,8 @@ __webpack_require__.r(__webpack_exports__);
       user: null,
       isFollowing: false,
       editing: false,
+      isAuth: false,
+      isThisAuth: false,
       profileObj: {
         bio: null,
         pic: null
@@ -2150,7 +2192,7 @@ __webpack_require__.r(__webpack_exports__);
       required: true,
       type: String
     },
-    auth_user: null
+    auth_usr: null
   },
   mounted: function mounted() {
     this.getUser();
@@ -2164,6 +2206,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.user = rsp.data.data;
       }).then(function (r) {
         _this.getFollowing();
+
+        _this.isAuth = _this.auth_usr !== "";
+        _this.isThisAuth = _this.user.userId === JSON.parse(_this.auth_usr).id;
       });
     },
     getFollowing: function getFollowing() {
@@ -38044,41 +38089,64 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "mx-auto" },
     _vm._l(this.posts, function(post) {
       return _c("div", [
-        _c(
-          "div",
-          { staticClass: "flex flex-row align-middle  items-center mb-8" },
-          [
-            _c("img", {
-              staticClass: " rounded-full w-16 h-16",
-              attrs: { src: post.picture, alt: "" }
-            }),
-            _vm._v(" "),
-            _c("div", {}, [
-              _c("a", { attrs: { href: "/profile/" + post.username } }, [
-                _vm._v(_vm._s(post.username))
-              ]),
+        _c("div", { staticClass: "flex flex-col align-baseline" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "flex flex-row align-top mx-auto rounded-md items-top mb-8"
+            },
+            [
+              _c("img", {
+                staticClass: " rounded-full w-16 h-16 object-cover mr-4",
+                attrs: { src: post.picture, alt: "" }
+              }),
               _vm._v(" "),
-              _c("p", [_vm._v(_vm._s(post.content))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Likes: " + _vm._s(post.likescount))]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "text-green-500",
-                  on: {
-                    click: function($event) {
-                      return _vm.likePost(post)
-                    }
-                  }
-                },
-                [_vm._v(" " + _vm._s(post.isLiked ? "Unlike" : "Like") + " ")]
-              )
-            ])
-          ]
-        )
+              _c("div", { staticClass: "   " }, [
+                _c("a", { attrs: { href: "/profile/" + post.username } }, [
+                  _c("b", [_c("i", [_vm._v(_vm._s(post.username))])])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  {
+                    staticClass:
+                      " w-64  min-w-64 text-wrap overflow-hidden break-all "
+                  },
+                  [_vm._v(_vm._s(post.content))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "flex lex-row align-middle items-center" },
+                  [
+                    _c("p", { staticClass: "pr-4" }, [
+                      _vm._v("Likes: " + _vm._s(post.likescount))
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("Shares: " + _vm._s(0))])
+                  ]
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "text-blue-500",
+              on: {
+                click: function($event) {
+                  return _vm.likePost(post)
+                }
+              }
+            },
+            [_vm._v(" " + _vm._s(post.isLiked ? "Unlike" : "Like") + " ")]
+          )
+        ])
       ])
     }),
     0
@@ -38108,152 +38176,149 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container mx-auto font-sans font-bold" },
+    { staticClass: "   font-sans font-bold" },
     [
-      _c("img", {
-        staticClass:
-          "object-cover h-48 w-48 mx-auto rounded-full border-red-500 border-solid border-2",
-        attrs: { alt: "", src: this.user.profile_picture_link }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "mx-auto text-center  w-64  px4 my-4" }, [
-        _c(
-          "h1",
-          {
+      _c(
+        "div",
+        { staticClass: "  bg-red-400 w-full  text-white shadow-xl py-4  " },
+        [
+          _c("img", {
             staticClass:
-              "mx-auto text-left my-4 bg-red-200 border-red-500 border-solid border-2 bg-red-200 "
-          },
-          [_vm._v(" " + _vm._s(this.user.username))]
-        ),
-        _vm._v(" "),
-        _c(
-          "p",
-          {
-            staticClass:
-              "mx-auto text-center h-64 border-red-500 border-solid border-2 bg-red-200"
-          },
-          [_vm._v(_vm._s(this.user.bio))]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "hover:bg-red-800  bg-red-500 p-3 ",
-            on: {
-              click: function($event) {
-                return _vm.followButton()
-              }
-            }
-          },
-          [_vm._v(" " + _vm._s(_vm.isFollowing ? "Unfollow" : "Follow"))]
-        ),
-        _vm._v(" "),
-        _vm.auth_user !== ""
-          ? _c(
-              "button",
-              {
-                staticClass: "text-red-500 hover:text-red-800 ",
-                on: {
-                  click: function($event) {
-                    _vm.editing = true
-                  }
-                }
-              },
-              [_vm._v(" Edit Profile")]
+              " align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 ",
+            attrs: { alt: "", src: this.user.profile_picture_link }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "mx-auto text-center  w-64  px4 my-4" }, [
+            !_vm.isThisAuth
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "hover:bg-white rounded-full bg-gray-200  p-3 text-red-400 ",
+                    on: {
+                      click: function($event) {
+                        return _vm.followButton()
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      " " + _vm._s(_vm.isFollowing ? "Unfollow" : "Follow")
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.isThisAuth
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "hover:bg-white rounded-full bg-gray-200  p-3 text-red-400 ",
+                    on: {
+                      click: function($event) {
+                        _vm.editing = true
+                      }
+                    }
+                  },
+                  [_vm._v(" Edit Profile")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("h1", { staticClass: "mx-auto text-center my-4      " }, [
+              _c("i", [_vm._v(" @" + _vm._s(this.user.username))])
+            ]),
+            _vm._v(" "),
+            _c(
+              "p",
+              { staticClass: "mx-auto text-center h-4 text-white mb-8 " },
+              [_vm._v(_vm._s(this.user.bio))]
             )
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("postfeed", {
-        staticClass: "mx-auto object-center",
-        attrs: { type: "profile", profilearr: this.user.id }
-      }),
+          ])
+        ]
+      ),
       _vm._v(" "),
       _vm.editing
-        ? _c(
-            "div",
-            { staticClass: "absolute bg-black inset-0 opacity-50 z-40" },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "z-30 bg-white relative mx-auto m-auto  w-full max-w-md text-black opacity-100"
-                },
-                [
-                  _vm._v("\n            THIS IS MODAL\n            "),
-                  _c(
-                    "form",
-                    {
-                      staticClass: "m-5",
+        ? _c("div", { staticClass: "fixed inset-0  overflow-hidden" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "z-50 opacity-100 bg-white rounded-md  vertical-align-middle relative mx-auto m-auto inset-y-50 w-full max-w-md text-black opacity-100"
+              },
+              [
+                _vm._v("\n            THIS IS MODAL\n            "),
+                _c(
+                  "form",
+                  {
+                    staticClass: "m-5",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.editBio()
+                      }
+                    }
+                  },
+                  [
+                    _c("label", { attrs: { for: "pp" } }, [
+                      _vm._v("Profile Picture")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "rounded-50",
+                      attrs: { id: "pp", type: "file" },
+                      on: { change: _vm.changed }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "Bio" } }),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.profileObj.bio,
+                          expression: "profileObj.bio"
+                        }
+                      ],
+                      attrs: { name: "bio", id: "bio", cols: "30", rows: "10" },
+                      domProps: { value: _vm.profileObj.bio },
                       on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return _vm.editBio()
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.profileObj, "bio", $event.target.value)
                         }
                       }
-                    },
-                    [
-                      _c("label", { attrs: { for: "pp" } }, [
-                        _vm._v("Profile Picture")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass: "rounded-50",
-                        attrs: { id: "pp", type: "file" },
-                        on: { change: _vm.changed }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "Bio" } }),
-                      _vm._v(" "),
-                      _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.profileObj.bio,
-                            expression: "profileObj.bio"
-                          }
-                        ],
-                        attrs: {
-                          name: "bio",
-                          id: "bio",
-                          cols: "30",
-                          rows: "10"
-                        },
-                        domProps: { value: _vm.profileObj.bio },
+                    }),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
                         on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.profileObj, "bio", $event.target.value)
+                          click: function($event) {
+                            _vm.editing = false
                           }
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          on: {
-                            click: function($event) {
-                              _vm.editing = false
-                            }
-                          }
-                        },
-                        [_vm._v("X")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", { attrs: { type: "submit" } })
-                    ]
-                  )
-                ]
-              )
-            ]
-          )
-        : _vm._e()
+                      },
+                      [_vm._v("X")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", { attrs: { type: "submit" } })
+                  ]
+                )
+              ]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("postfeed", {
+        staticClass: "mx-auto mt-4",
+        attrs: { type: "profile", profilearr: this.user.id }
+      })
     ],
     1
   )

@@ -1,17 +1,32 @@
 <template>
-    <div>
+    <div class="mx-auto">
         <div v-for="post in this.posts">
-            <div class="flex flex-row align-middle  items-center mb-8">
-                <img class=" rounded-full w-16 h-16" :src="post.picture" alt="">
-                <div class="">
-                    <a :href=" '/profile/'+post.username ">{{ post.username }}</a>
-                    <p>{{ post.content }}</p>
-                    <p>Likes: {{post.likescount}}</p>
-                    <button class="text-green-500" @click="likePost(post)"> {{(post.isLiked)? 'Unlike': 'Like'}} </button>
+            <div class="flex flex-col align-baseline">
+                <div class="flex flex-row align-top mx-auto rounded-md items-top mb-8">
+                    <img class=" rounded-full w-16 h-16 object-cover mr-4" :src="post.picture" alt="">
+                    <div class="   ">
+                        <a class="" :href=" '/profile/'+post.username "> <b><i>{{ post.username }}</i></b></a>
+                        <p class=" w-64  min-w-64 text-wrap overflow-hidden break-all ">{{ post.content }}</p>
+
+
+                        <div class="flex lex-row align-middle items-center">
+                            <p class="pr-4">Likes: {{post.likescount}}</p>
+                            <p>Shares: {{0}}</p>
+
+                        </div>
+
+                    </div>
+
+
+
 
                 </div>
 
+
+
+                <button class="text-blue-500" @click="likePost(post)"> {{(post.isLiked)? 'Unlike': 'Like'}} </button>
             </div>
+
 
 
 
@@ -74,6 +89,20 @@ export default {
 
 
         likePost(post){
+
+            let notif = new FormData();
+            let content = post.username + " liked your post";
+            notif.append('profile_id',post.posterId);
+            notif.append('content',content);
+            notif.append('link','/profile/'+post.username);
+            notif.append('type','like');
+            if(!post.isLiked){
+                axios.post('/notification/create',notif).then(rsp=>{
+                    console.log(rsp);
+
+                })
+            }
+
             axios.post('/posts/like/' + post.id).then(rsp=>{
                 console.log(rsp.data);
 

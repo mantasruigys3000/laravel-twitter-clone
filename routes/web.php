@@ -30,6 +30,9 @@ Route::post('/users/stopfollowing','FollowController@destroy');
 
 Route::post('/posts/like/{postid}','LikeController@store');
 
+//notifications
+
+Route::post('/notification/create','NotificationController@store');
 
 
 

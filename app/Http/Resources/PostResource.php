@@ -25,6 +25,7 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'created_at' => $this->created_at,
             'username'=> $this->user->username,
+            'posterId'=> $this->user->id,
             'picture' => $pp,
             'likescount' => $this->likesCount,
             'isLiked' => $isLiked,
