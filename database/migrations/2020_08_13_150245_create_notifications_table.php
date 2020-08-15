@@ -23,6 +23,9 @@ class CreateNotificationsTable extends Migration
             $table->unsignedBigInteger('from_profile_id')->nullable(true);
             $table->foreign('profile_id')->references('id')->on('profiles');
             $table->foreign('from_profile_id')->references('id')->on('profiles');
+            $table->boolean('seen')->default(false);
+
+
         });
     }
 

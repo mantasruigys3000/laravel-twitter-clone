@@ -53,7 +53,11 @@ export default {
         type: {
             required: true,
             type: String,
-        }
+        },
+
+        auth_user: null,
+
+
     },
 
     methods: {
@@ -71,7 +75,8 @@ export default {
 
                 })
             }else if(this.type == "dashboard"){
-                profiles.push(JSON.parse(this.profilearr)[0].pivot.profile_id);
+
+                profiles.push(JSON.parse(this.auth_user).id);
                 JSON.parse(this.profilearr).forEach(follow =>{
                     profiles.push(follow.pivot.follow_id);
                 });

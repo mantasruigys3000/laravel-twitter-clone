@@ -1996,8 +1996,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "User_Navbar"
+  name: "User_Navbar",
+  data: function data() {
+    return {};
+  },
+  props: {
+    isauth: false
+  },
+  methods: {
+    logout: function logout() {
+      axios.post('/logout');
+      window.location = '/login';
+    }
+  }
 });
 
 /***/ }),
@@ -2060,7 +2081,8 @@ __webpack_require__.r(__webpack_exports__);
     type: {
       required: true,
       type: String
-    }
+    },
+    auth_user: null
   },
   methods: {
     getPosts: function getPosts() {
@@ -2076,7 +2098,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.posts = rsp.data.data;
         });
       } else if (this.type == "dashboard") {
-        profiles.push(JSON.parse(this.profilearr)[0].pivot.profile_id);
+        profiles.push(JSON.parse(this.auth_user).id);
         JSON.parse(this.profilearr).forEach(function (follow) {
           profiles.push(follow.pivot.follow_id);
         });
@@ -38056,14 +38078,52 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    {
+      staticClass:
+        "w-full bg-red-500 flex flex-row align-center justify-center text-white font-bold"
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", [
+        _vm.isauth
+          ? _c(
+              "button",
+              {
+                staticClass: "px-4",
+                on: {
+                  click: function($event) {
+                    return _vm.logout()
+                  }
+                }
+              },
+              [_vm._v("Logout")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("a", { staticClass: "px-4", attrs: { href: "" } }, [_vm._v("Login")])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("p", [_vm._v("navbar")])])
+    return _c("div", [
+      _c("a", { staticClass: "px-4", attrs: { href: "" } }, [_vm._v("Hone")]),
+      _vm._v(" "),
+      _c("a", { staticClass: "px-4", attrs: { href: "" } }, [
+        _vm._v("Profile")
+      ]),
+      _vm._v(" "),
+      _c("a", { staticClass: "px-4", attrs: { href: "" } }, [
+        _vm._v("Notifications")
+      ])
+    ])
   }
 ]
 render._withStripped = true

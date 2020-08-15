@@ -55,6 +55,9 @@ class NotificationController extends Controller
     public function show(Notification $notification)
     {
         //
+
+        return response()->json(auth()->user()->profile->notifications);
+
     }
 
     /**
