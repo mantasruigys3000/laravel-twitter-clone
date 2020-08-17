@@ -50,13 +50,16 @@ Route::post('/posts/like/{postid}','LikeController@store');
 
 Route::post('/notification/create','NotificationController@store');
 Route::get('/notifications','NotificationController@show');
-
-
-
 Route::get('/', 'HomeController@index')->name('home');
 
+
+//posts
 Route::post('/post','PostsController@store');
 Route::post('/posts','PostsController@index');
+Route::get('/post/{postid}','PostsController@show');
+Route::get('/status/{postid}',function($postid){
+    return view('status',['postid' =>$postid]);
+});
 
 Route::get('/profile/{username}',function ($username){
     return view('profile',['username' => $username]);

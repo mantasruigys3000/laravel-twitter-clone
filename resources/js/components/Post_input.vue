@@ -1,8 +1,8 @@
 <template>
 <div>
-    <div class="">
-        <form @submit.prevent="sendPost()">
-            <textarea  v-model="post.content" class="d-flex" name="content" id="content" cols="30" rows="10"></textarea>
+    <div class="mx-auto">
+        <form @submit.prevent="sendPost()" >
+            <textarea  v-model="post.content" class=" bg-gray-200" name="content" id="content" cols="30" rows="10" placeholder="Whats going on today?..."></textarea>
             <input type="submit" value="Post" class="mb-4" >
         </form>
     </div>
@@ -32,13 +32,14 @@ export default {
                 this.posts.unshift(rsp.data.data);
 
             })
+            window.location.reload()
         },
 
 
     },
 
     mounted() {
-        this.getPosts();
+
     }
 }
 </script>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     //
-    protected $appends = ['ownerName','likesCount'];
+    protected $appends = ['likesCount'];
 
     public function user(){
         return $this->belongsTo(Profile::Class);
@@ -19,11 +19,7 @@ class Post extends Model
     }
 
 
-    public function getOwnerNameAttribute(){
 
-        return $this->user->username;
-
-    }
 
     public function getLikesCountAttribute(){
         return  $this->likes->count();

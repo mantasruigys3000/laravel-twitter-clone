@@ -30,5 +30,11 @@ class PostsController extends Controller
 
     }
 
+    public function show($postid){
+        $post =  Post::where('id',$postid)->FirstOrFail();
+        return new PostResource($post);
+
+    }
+
 
 }

@@ -1972,11 +1972,10 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/post', this.post).then(function (rsp) {
         _this.posts.unshift(rsp.data.data);
       });
+      window.location.reload();
     }
   },
-  mounted: function mounted() {
-    this.getPosts();
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2005,19 +2004,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "User_Navbar",
   data: function data() {
-    return {};
+    return {
+      prof: null,
+      showNotifications: false,
+      notifications: []
+    };
   },
   props: {
-    isauth: false
+    isauth: false,
+    profile: ''
   },
   methods: {
     logout: function logout() {
       axios.post('/logout');
       window.location = '/login';
     }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.prof = JSON.parse(this.profile);
+    axios.get('/notifications').then(function (rsp) {
+      _this.notifications = rsp.data;
+    });
   }
 });
 
@@ -2302,6 +2328,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "profilesearch",
   data: function data() {
@@ -2310,9 +2340,7 @@ __webpack_require__.r(__webpack_exports__);
       profiles: []
     };
   },
-  methods: {
-    typed: function typed() {}
-  },
+  methods: {},
   computed: {
     searchLen: function searchLen() {
       return this.search.length;
@@ -38013,7 +38041,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", {}, [
+    _c("div", { staticClass: "mx-auto" }, [
       _c(
         "form",
         {
@@ -38034,8 +38062,14 @@ var render = function() {
                 expression: "post.content"
               }
             ],
-            staticClass: "d-flex",
-            attrs: { name: "content", id: "content", cols: "30", rows: "10" },
+            staticClass: " bg-gray-200",
+            attrs: {
+              name: "content",
+              id: "content",
+              cols: "30",
+              rows: "10",
+              placeholder: "Whats going on today?..."
+            },
             domProps: { value: _vm.post.content },
             on: {
               input: function($event) {
@@ -38085,14 +38119,27 @@ var render = function() {
         "w-full bg-red-500 flex flex-row align-center justify-center text-white font-bold"
     },
     [
-      _vm._m(0),
+      _c("div", [
+        _c("a", { staticClass: "px-4 font-bold", attrs: { href: "/" } }, [
+          _vm._v("Home")
+        ]),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "px-4",
+            attrs: { href: "/profile/" + _vm.prof.username }
+          },
+          [_vm._v("Profile")]
+        )
+      ]),
       _vm._v(" "),
       _c("div", [
         _vm.isauth
           ? _c(
               "button",
               {
-                staticClass: "px-4",
+                staticClass: "px-4 font-bold",
                 on: {
                   click: function($event) {
                     return _vm.logout()
@@ -38104,28 +38151,48 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _c("a", { staticClass: "px-4", attrs: { href: "" } }, [_vm._v("Login")])
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("a", { staticClass: "px-4", attrs: { href: "" } }, [_vm._v("Hone")]),
-      _vm._v(" "),
-      _c("a", { staticClass: "px-4", attrs: { href: "" } }, [
-        _vm._v("Profile")
       ]),
       _vm._v(" "),
-      _c("a", { staticClass: "px-4", attrs: { href: "" } }, [
-        _vm._v("Notifications")
-      ])
-    ])
-  }
-]
+      _c("div", {}, [
+        _c(
+          "button",
+          {
+            staticClass: "px-4 font-bold w-32 relative",
+            on: {
+              click: function($event) {
+                _vm.showNotifications = !_vm.showNotifications
+              }
+            }
+          },
+          [_vm._v("Notifications")]
+        ),
+        _vm._v(" "),
+        _vm.showNotifications
+          ? _c(
+              "div",
+              { staticClass: " absolute bg-red-500 w-32 h-32 overflow-scroll" },
+              _vm._l(this.notifications, function(notification) {
+                return _c("div", { staticClass: "relative " }, [
+                  _c("div", { staticClass: "relative block bg-red-200" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(notification.content) +
+                        "\n                "
+                    )
+                  ])
+                ])
+              }),
+              0
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("profilesearch")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38406,43 +38473,54 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search,
-              expression: "search"
-            }
-          ],
-          attrs: { type: "text" },
-          domProps: { value: _vm.search },
-          on: {
-            change: _vm.typed,
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.search = $event.target.value
-            }
+    _c("div", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search,
+            expression: "search"
           }
-        }),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(this.searchLen))]),
-        _vm._v(" "),
-        _vm._l(this.profiles, function(profile) {
-          return _c("div", [
-            _c("a", { attrs: { href: "/profile/" + profile.username } }, [
-              _vm._v(_vm._s(profile.username))
-            ])
-          ])
-        })
-      ],
-      2
-    )
+        ],
+        staticClass: "w-40 text-black",
+        attrs: { type: "text", placeholder: "search" },
+        domProps: { value: _vm.search },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.search = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _vm.searchLen > 0
+        ? _c(
+            "div",
+            { staticClass: " absolute overflow-scroll h-32 bg-red-500 w-40" },
+            _vm._l(this.profiles, function(profile) {
+              return _c("div", { staticClass: " relative " }, [
+                _c("img", {
+                  staticClass: " inline-block w-8 h-8 rounded-full",
+                  attrs: { src: profile.profile_picture_link, alt: "" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "inline-block bg-red-500",
+                    attrs: { href: "/profile/" + profile.username }
+                  },
+                  [_vm._v(_vm._s(profile.username))]
+                )
+              ])
+            }),
+            0
+          )
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []

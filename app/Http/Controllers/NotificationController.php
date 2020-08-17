@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Notification;
 use Illuminate\Http\Request;
 
@@ -56,7 +57,7 @@ class NotificationController extends Controller
     {
         //
 
-        return response()->json(auth()->user()->profile->notifications);
+        return response()->json(NotificationResource::collection(auth()->user()->profile->notifications));
 
     }
 

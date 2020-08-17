@@ -1,11 +1,15 @@
 <template>
 <div>
     <div>
-        <input type="text" v-model="search" @change="typed">
-        <p>{{this.searchLen}}</p>
-        <div v-for="profile in this.profiles">
-            <a :href=" '/profile/' + profile.username ">{{profile.username}}</a>
+        <input class="w-40 text-black" type="text" v-model="search" placeholder="search">
+
+        <div class=" absolute overflow-scroll h-32 bg-red-500 w-40" v-if="searchLen > 0" >
+            <div  class=" relative " v-for="profile in this.profiles" >
+                <img class=" inline-block w-8 h-8 rounded-full" :src="profile.profile_picture_link" alt="">
+                <a class="inline-block bg-red-500" :href=" '/profile/' + profile.username ">{{profile.username}}</a>
+            </div>
         </div>
+
     </div>
 </div>
 </template>
@@ -21,10 +25,8 @@ export default {
         }
     },
     methods:{
-        typed(){
 
 
-        }
 
     },
 

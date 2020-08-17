@@ -20,7 +20,7 @@ class NotificationResource extends JsonResource
             'content' => $this->content,
             'username' => $this->profile->username,
             'fromUsername' => $this->from->username,
-            'picture' => $$pp,
+            'picture' => $pp,
 
         ];
 
