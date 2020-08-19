@@ -35,7 +35,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 //users
 Route::get('/users/getuser/{username}','ProfileController@show');
 Route::post('/users/editbio','ProfileController@edit');
-Route::post('/users/profiles','ProfileController@index');
+Route::post('/users/profiles','UserController@index');
 
 //follows
 Route::post('/users/isfollowing','ProfileController@isFollowing');
@@ -50,7 +50,11 @@ Route::post('/posts/like/{postid}','LikeController@store');
 
 Route::post('/notification/create','NotificationController@store');
 Route::get('/notifications','NotificationController@show');
-Route::get('/', 'HomeController@index')->name('home');
+
+
+Route::get('/{any}','SpaController@index')->where('any','.*');
+
+
 
 
 //posts

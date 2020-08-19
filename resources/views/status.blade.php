@@ -6,11 +6,11 @@
 @endsection
 
 @section('profile')
-{{auth()->user()->profile}}
+{{auth()->user()}}
 @endsection
 
 @section('contentbody')
 {{$postid}}
-ahh
+
 @endsection
 

@@ -71,13 +71,10 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'username' => $data['username'],
 
         ]);
 
-        $profile = new Profile();
-        $profile->username = $data['username'];
-        $profile->user_id = $user->id;
-        $profile->save();
 
 
 

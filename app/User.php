@@ -52,6 +52,10 @@ class User extends Authenticatable
 
     }
 
+    public function follows(){
+    return $this->hasMany(Follow::class);
+    }
+
 
 
 

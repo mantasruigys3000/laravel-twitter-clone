@@ -9,6 +9,6 @@
     <div id="">
 
         <post-input class="mx-auto w-40" ></post-input>
-        <postfeed type="dashboard" auth_user="{{auth()->user()}}" profilearr="{{auth()->user()->profile->follows}}"> </postfeed>
+        <postfeed type="dashboard" auth_user="{{auth()->user()}}" profilearr="{{auth()->user()->follows}}"> </postfeed>
     </div>
 @endsection

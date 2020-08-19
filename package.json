@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "font-awesome": "^4.7.0",
-        "tailwindcss": "^1.6.2"
+        "tailwindcss": "^1.6.2",
+        "vue-router": "^3.4.3"
     }
 }

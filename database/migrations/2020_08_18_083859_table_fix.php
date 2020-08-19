@@ -16,7 +16,7 @@ class TableFix extends Migration
         //Add profile features to the user table
         Schema::table('users',function (Blueprint $table){
             $table->string('bio')->nullable();
-            $table->unsignedBigInteger('profile_picture');
+            $table->unsignedBigInteger('profile_picture')->nullable(true);
             $table->foreign('profile_picture')->references('id')->on('files');
             $table->string('username')->unique(true);
 

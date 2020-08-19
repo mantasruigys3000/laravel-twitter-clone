@@ -6,7 +6,11 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
+import vrouter  from'vue-router';
+
+Vue.use(vrouter);
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,6 +23,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('post-input', require('./components/Post_input.vue').default);
 Vue.component('user-navbar', require('./components/User_Navbar.vue').default);
@@ -26,6 +31,8 @@ Vue.component('upload_image', require('./components/upload_image.vue').default);
 Vue.component('userprofile', require('./components/profile_page.vue').default);
 Vue.component('postfeed', require('./components/postfeed.vue').default);
 Vue.component('profilesearch', require('./components/profilesearch.vue').default);
+Vue.component('app', require('./components/app.vue').default);
+
 
 
 
@@ -34,7 +41,22 @@ Vue.component('profilesearch', require('./components/profilesearch.vue').default
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import mainapp from './components/app'
+import home from './components/home'
+import profile from './components/profile'
+
+const routes = [
+    {path: '/', name:'home', component: home},
+    {path: '/prof/:userid', name:'profile', component: profile},
+
+]
+
+const router = new vrouter({
+    routes,
+})
 
 const app = new Vue({
     el: '#app',
+    components: {mainapp},
+    router
 });
