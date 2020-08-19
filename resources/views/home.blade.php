@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-
     <user-navbar isAuth="{{auth()->check()}}" profile="{{auth()->user()->profile}}">
     </user-navbar>
 

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ProfileController;
-use App\Profile;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -66,11 +64,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-        $user = User::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+<<<<<<< Updated upstream
             'username' => $data['username'],
 
         ]);
@@ -83,5 +81,8 @@ class RegisterController extends Controller
 
 
 
+=======
+        ]);
+>>>>>>> Stashed changes
     }
 }

@@ -95,22 +95,8 @@ export default {
 
         likePost(post){
 
-            let notif = new FormData();
-            let content = post.username + " liked your post";
-            notif.append('profile_id',post.posterId);
-            notif.append('content',content);
-            notif.append('link','/profile/'+post.username);
-            notif.append('type','like');
-            if(!post.isLiked){
-                axios.post('/notification/create',notif).then(rsp=>{
-                    console.log(rsp);
-
-                })
-            }
-
             axios.post('/posts/like/' + post.id).then(rsp=>{
                 console.log(rsp.data);
-
             })
         }
     },

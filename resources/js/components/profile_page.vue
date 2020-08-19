@@ -51,7 +51,7 @@
 
 <script>
 export default {
-    name: "Profile Page",
+    name: "profile_page",
 
     data(){
         return{

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Like;
+use App\Notification;
+use App\Post;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
@@ -33,23 +35,23 @@ class LikeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($post)
+    public function store(Post $post)
     {
-        $like = new Like();
-        if($this->isLiked($post)){
-            $like = Like::where(['profile_id' => auth()->user()->profile->id,'post_id'=>$post])->FirstOrFail();
-            //dd($like);
+
+        $like = Like::where(['profile_id' => auth()->user()->profile->id,'post_id'=>$post])->FirstOrFail();
+
+        if( $like instanceof Like){
+            // we want to unlike the post
             $like->delete();
-
-        }else{
-
+        } else {
+            // we want to like it
+            $like = new Like();
             $like->profile_id = auth()->user()->profile->id;
-            $like->post_id = $post;;
+            $like->post_id = $post;
             $like->save();
-
-
         }
-        return($like);
+
+        return $like;
     }
 
     /**

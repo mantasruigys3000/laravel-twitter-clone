@@ -10,7 +10,7 @@ class Post extends Model
     protected $appends = ['likesCount'];
 
     public function user(){
-        return $this->belongsTo(Profile::Class);
+        return $this->belongsTo(User::class);
     }
 
     public function likes(){

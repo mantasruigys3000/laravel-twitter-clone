@@ -52,7 +52,7 @@ Route::post('/notification/create','NotificationController@store');
 Route::get('/notifications','NotificationController@show');
 
 
-Route::get('/{any}','SpaController@index')->where('any','.*');
+Route::get('/','SpaController@index');
 
 
 
@@ -75,4 +75,8 @@ Route::get('/uploadImg',function (){
 });
 
 Route::post('/i/uploadImg','FileController@store');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 

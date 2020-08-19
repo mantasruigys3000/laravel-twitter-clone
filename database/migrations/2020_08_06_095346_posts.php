@@ -31,8 +31,12 @@ class Posts extends Migration
      */
     public function down()
     {
+<<<<<<< Updated upstream
         //
          Schema::dropIfExists('posts');
 
+=======
+        Schema::dropIfExists('posts');
+>>>>>>> Stashed changes
     }
 }

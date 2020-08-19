@@ -45,7 +45,7 @@ export default {
     watch:{
         search: function(){
             if(this.searchLen > 0){
-                axios.post('users/profiles',{'search': this.search}).then(rsp=>{
+                axios.post('/users/profiles',{'search': this.search}).then(rsp=>{
                     console.log(rsp.data);
                     this.profiles = rsp.data.data;
 
@@ -55,7 +55,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

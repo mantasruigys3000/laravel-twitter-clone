@@ -14,8 +14,7 @@ class Profile extends Model
     }
 
     public function follows(){
-        return $this->belongsToMany(User::class,'follows','profile_id','follow_id');
-
+        return $this->hasMany(Follow::class);
     }
 
     public function followsarray(){

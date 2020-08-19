@@ -7,7 +7,7 @@
 require('./bootstrap');
 
 import Vue from 'vue';
-import vrouter  from'vue-router';
+import vrouter from 'vue-router';
 
 Vue.use(vrouter);
 
@@ -31,9 +31,7 @@ Vue.component('upload_image', require('./components/upload_image.vue').default);
 Vue.component('userprofile', require('./components/profile_page.vue').default);
 Vue.component('postfeed', require('./components/postfeed.vue').default);
 Vue.component('profilesearch', require('./components/profilesearch.vue').default);
-Vue.component('app', require('./components/app.vue').default);
-
-
+Vue.component('main-app', require('./components/app.vue').default);
 
 
 /**
@@ -41,13 +39,10 @@ Vue.component('app', require('./components/app.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-import mainapp from './components/app'
-import home from './components/home'
-import profile from './components/profile'
 
 const routes = [
-    {path: '/', name:'home', component: home},
-    {path: '/prof/:userid', name:'profile', component: profile},
+    {path: '/', name: 'home', component: require('./components/home').default},
+    {path: '/prof/:userid?', name: 'profile', component: require('./components/profile').default},
 
 ]
 
@@ -57,6 +52,5 @@ const router = new vrouter({
 
 const app = new Vue({
     el: '#app',
-    components: {mainapp},
     router
 });
