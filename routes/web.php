@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes();
+
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
@@ -33,8 +33,8 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
 //users
-Route::get('/users/getuser/{username}','ProfileController@show');
-Route::post('/users/editbio','ProfileController@edit');
+Route::get('/users/getuser/{username}','UserController@show');
+Route::post('/users/editbio','UserController@update');
 Route::post('/users/profiles','UserController@index');
 
 //follows
@@ -52,9 +52,10 @@ Route::post('/notification/create','NotificationController@store');
 Route::get('/notifications','NotificationController@show');
 
 
-Route::get('/','SpaController@index');
 
-
+Route::group(['middleware' =>  'auth'],function(){
+    Route::get('/','SpaController@index');
+});
 
 
 //posts
@@ -65,9 +66,12 @@ Route::get('/status/{postid}',function($postid){
     return view('status',['postid' =>$postid]);
 });
 
+/*
 Route::get('/profile/{username}',function ($username){
     return view('profile',['username' => $username]);
 });
+*/
+
 
 Route::get('/uploadImg',function (){
     return view('upload_image');

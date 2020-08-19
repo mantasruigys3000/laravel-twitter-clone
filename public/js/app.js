@@ -1954,6 +1954,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "post_input",
   data: function data() {
@@ -1975,7 +1984,10 @@ __webpack_require__.r(__webpack_exports__);
       window.location.reload();
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {},
+  props: {
+    user: {}
+  }
 });
 
 /***/ }),
@@ -2028,8 +2040,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   props: {
-    isauth: false,
-    profile: ''
+    user: {}
   },
   methods: {
     logout: function logout() {
@@ -2037,14 +2048,7 @@ __webpack_require__.r(__webpack_exports__);
       window.location = '/login';
     }
   },
-  mounted: function mounted() {
-    var _this = this;
-
-    this.prof = JSON.parse(this.profile);
-    axios.get('/notifications').then(function (rsp) {
-      _this.notifications = rsp.data;
-    });
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2075,9 +2079,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "app"
+  name: "app",
+  props: {
+    user: {
+      required: true
+    }
+  }
 });
 
 /***/ }),
@@ -2219,8 +2227,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "profile"
+  name: "profile",
+  data: function data() {
+    return {
+      profileEdit: {
+        picture: null,
+        bio: ''
+      },
+      profile: null,
+      editing: false
+    };
+  },
+  mounted: function mounted() {
+    this.getProfile();
+  },
+  methods: {
+    getProfile: function getProfile() {
+      var _this = this;
+
+      axios.get('/users/getuser/' + this.$route.params.userid).then(function (rsp) {
+        _this.profile = rsp.data;
+        _this.profileEdit.bio = _this.profile.bio;
+      });
+    },
+    editProfile: function editProfile() {
+      var data = new FormData();
+      data.append('bio', this.profileEdit.bio);
+      data.append('file', this.profile.picture);
+      axios.post('/i/uploadImg', data).then(function (rsp) {
+        data.append('pic', rsp.data.id);
+        return axios.post('/users/editbio', data);
+      }).then(function (rsp) {});
+    }
+  },
+  props: {
+    user: {}
+  }
 });
 
 /***/ }),
@@ -20172,52 +20254,71 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "mx-auto" }, [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.sendPost()
-            }
-          }
-        },
-        [
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.post.content,
-                expression: "post.content"
-              }
-            ],
-            staticClass: " bg-gray-200",
-            attrs: {
-              name: "content",
-              id: "content",
-              cols: "30",
-              rows: "10",
-              placeholder: "Whats going on today?..."
+    _c("div", { staticClass: "mx-auto max-w-lg shadow-md" }, [
+      _c("div", { staticClass: "flex flex-row" }, [
+        _c("img", {
+          staticClass: "w-16 h-16 rounded-full object-cover",
+          attrs: { src: "/images/default_pp.png", alt: "" }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex-col w-full" }, [
+          _c(
+            "h1",
+            {
+              staticClass:
+                "bg-red-600 w-full text-white font-bold text-center shadow-sm rounded-md"
             },
-            domProps: { value: _vm.post.content },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.post, "content", $event.target.value)
-              }
-            }
-          }),
+            [_vm._v(_vm._s(_vm.user.username))]
+          ),
           _vm._v(" "),
-          _c("input", {
-            staticClass: "mb-4",
-            attrs: { type: "submit", value: "Post" }
-          })
-        ]
-      )
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.sendPost()
+                }
+              }
+            },
+            [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.post.content,
+                    expression: "post.content"
+                  }
+                ],
+                staticClass: "w-full ",
+                attrs: {
+                  name: "content",
+                  id: "content",
+                  cols: "30",
+                  rows: "3",
+                  placeholder: "Whats going on today?..."
+                },
+                domProps: { value: _vm.post.content },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.post, "content", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                staticClass:
+                  "mb-4 float-right rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold px-2",
+                attrs: { type: "submit", value: "Post" }
+              })
+            ]
+          )
+        ])
+      ])
     ])
   ])
 }
@@ -20247,26 +20348,32 @@ var render = function() {
     "div",
     {
       staticClass:
-        "w-full bg-red-500 flex flex-row align-center justify-center text-white font-bold"
+        "w-full bg-red-500 flex flex-row align-center p-2  shadow-lg justify-center text-white font-bold"
     },
     [
-      _c("div", [
-        _c("a", { staticClass: "px-4 font-bold", attrs: { href: "/" } }, [
-          _vm._v("Home")
-        ]),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "px-4",
-            attrs: { href: "/profile/" + _vm.prof.username }
-          },
-          [_vm._v("Profile")]
-        )
-      ]),
+      _c(
+        "div",
+        [
+          _c(
+            "router-link",
+            { staticClass: "px-4 font-bold", attrs: { to: { name: "home" } } },
+            [_vm._v(" Home")]
+          ),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "px-4 font-bold",
+              attrs: { to: { name: "profile" } }
+            },
+            [_vm._v(" Profile")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("div", [
-        _vm.isauth
+        _vm.user !== null
           ? _c(
               "button",
               {
@@ -20346,24 +20453,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      [
-        _vm._v("\n\n        THIS IS THE APP\n        "),
-        _c(
-          "router-link",
-          { staticClass: "text-green-500", attrs: { to: { name: "home" } } },
-          [_vm._v(" HOME")]
-        ),
-        _vm._v(" "),
-        _c("router-link", { attrs: { to: { name: "profile" } } }, [
-          _vm._v(" PROFILE")
-        ])
-      ],
-      1
-    ),
+    _c("div", [_c("user-navbar", { attrs: { user: _vm.user } })], 1),
     _vm._v(" "),
-    _c("div", [_c("router-view")], 1)
+    _c("div", [_c("router-view", { attrs: { user: _vm.user } })], 1)
   ])
 }
 var staticRenderFns = []
@@ -20508,9 +20600,161 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    this is profile\n")])
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "container mx-auto font-bold text-white text-center max-w-lg text-lg mt-4 rounded-md shadow-md px-4"
+        },
+        [
+          _c("div", { staticClass: "rounded-md bg-red-600 mb-4" }, [
+            _vm._v(" " + _vm._s(_vm.profile.username))
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex flex-row justify-center " }, [
+            !_vm.editing
+              ? _c("img", {
+                  staticClass:
+                    "  mr-4 align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 ",
+                  attrs: { alt: "", src: " /images/default_pp.png " }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", [
+              _c("label", { attrs: { for: "" } }, [
+                _vm.editing
+                  ? _c("img", {
+                      staticClass:
+                        "  mr-4 align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 ",
+                      attrs: { alt: "", src: " /images/default_pp.png " }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.editing
+                  ? _c("input", {
+                      staticClass: "hidden ",
+                      attrs: { type: "file" }
+                    })
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex flex-col justify-between" }, [
+              !_vm.editing
+                ? _c("h1", { staticClass: "text-black text-left " }, [
+                    _vm._v(_vm._s(_vm.profile.bio))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.editing
+                ? _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.profileEdit.bio,
+                        expression: "profileEdit.bio"
+                      }
+                    ],
+                    staticClass: "text-black text-left ",
+                    domProps: { value: _vm.profileEdit.bio },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.profileEdit, "bio", $event.target.value)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "pb-2 mb-4" }, [
+            _vm.user.id === _vm.profile.id && !_vm.editing
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold",
+                    on: {
+                      click: function($event) {
+                        _vm.editing = true
+                      }
+                    }
+                  },
+                  [_vm._v("Edit Profile")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.user.id === _vm.profile.id && _vm.editing
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold",
+                    on: {
+                      click: function($event) {
+                        _vm.editing = false
+                      }
+                    }
+                  },
+                  [_vm._v("Submit")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.user.id !== _vm.profile.id
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold"
+                  },
+                  [_vm._v("Follow")]
+                )
+              : _vm._e()
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("post-input", { attrs: { user: _vm.user } })
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "flex flex-row text-white font-bold  justify-between text-xs mb-4 "
+      },
+      [
+        _c("p", { staticClass: "bg-red-700 px-1 mr-1 rounded-lg" }, [
+          _vm._v("Member since: 18/08/2020")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "bg-red-700 px-1 mr-1 rounded-lg" }, [
+          _vm._v("Followers: 0")
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "bg-red-700 px-1 mr-1 rounded-lg" }, [
+          _vm._v("Following: 0")
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -36032,17 +36276,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/css/app.css":
-/*!*******************************!*\
-  !*** ./resources/css/app.css ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -36094,7 +36327,7 @@ var routes = [{
   name: 'home',
   component: __webpack_require__(/*! ./components/home */ "./resources/js/components/home.vue")["default"]
 }, {
-  path: '/prof/:userid?',
+  path: '/profile/:userid?',
   name: 'profile',
   component: __webpack_require__(/*! ./components/profile */ "./resources/js/components/profile.vue")["default"]
 }];
@@ -36841,15 +37074,26 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleBuildError: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):\nError: ENOENT: no such file or directory, open '/Users/mantasruigys/Code/twitter_clone/resources/sass/app.scss'\n    at /Users/mantasruigys/Code/twitter_clone/node_modules/webpack/lib/NormalModule.js:316:20\n    at /Users/mantasruigys/Code/twitter_clone/node_modules/loader-runner/lib/LoaderRunner.js:367:11\n    at /Users/mantasruigys/Code/twitter_clone/node_modules/loader-runner/lib/LoaderRunner.js:203:19\n    at /Users/mantasruigys/Code/twitter_clone/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:85:15\n    at processTicksAndRejections (internal/process/task_queues.js:79:11)");
+
+/***/ }),
+
 /***/ 0:
-/*!***********************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/css/app.css ***!
-  \***********************************************************/
+/*!*************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/gareththompson/code/laravel-twitter-clone/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/gareththompson/code/laravel-twitter-clone/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /Users/mantasruigys/Code/twitter_clone/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mantasruigys/Code/twitter_clone/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -3,14 +3,13 @@
     <div>
         <div>
 
-            THIS IS THE APP
-            <router-link class="text-green-500" :to="{name:'home'}"> HOME</router-link>
-            <router-link :to="{name:'profile'}" > PROFILE</router-link>
+            <user-navbar :user="user"></user-navbar>
+
 
         </div>
 
         <div>
-            <router-view></router-view>
+            <router-view :user="user"></router-view>
         </div>
     </div>
 
@@ -18,6 +17,12 @@
 
 <script>
 export default {
-    name: "app"
+    name: "app",
+
+    props:{
+        user:{
+            required:true,
+        }
+    }
 }
 </script>

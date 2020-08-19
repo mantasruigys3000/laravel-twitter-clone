@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProfileResource;
 use App\Profile;
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -23,4 +24,13 @@ class UserController extends Controller
 
         return response()->json(auth()->user());
     }
+
+    public function show( $username){
+        $user = User::where('username',$username)->FirstOrFail();
+
+        return response()->json($user);
+
+    }
+
+
 }

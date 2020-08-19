@@ -17,7 +17,7 @@
 </head>
 <body>
 <div id="app">
-    <main-app></main-app>
+    <main-app :user="{{auth()->user()}}"> </main-app>
 </div>
 
 <script src="{{ mix('js/app.js') }}"></script>

@@ -1,12 +1,12 @@
 <template>
-    <div class="w-full bg-red-500 flex flex-row align-center justify-center text-white font-bold">
+    <div class="w-full bg-red-500 flex flex-row align-center p-2  shadow-lg justify-center text-white font-bold">
         <div >
-            <a href="/" class="px-4 font-bold">Home</a>
-            <a :href=" '/profile/'+prof.username " class="px-4">Profile</a>
+            <router-link class="px-4 font-bold" :to="{name:'home'}"> Home</router-link>
+            <router-link class="px-4 font-bold" :to="{name:'profile'}" > Profile</router-link>
 
         </div>
         <div>
-            <button v-if="isauth"  @click="logout()" class="px-4 font-bold">Logout</button>
+            <button v-if="user !== null"  @click="logout()" class="px-4 font-bold">Logout</button>
             <a href=""class="px-4">Login</a>
         </div>
         <div class="">
@@ -40,13 +40,16 @@ name: "User_Navbar",
         notifications: [],
 
 
+
     }
 
     },
 
     props:{
-        isauth:false,
-        profile:'',
+
+        user:{
+
+        },
 
 
 
@@ -62,11 +65,8 @@ name: "User_Navbar",
 
 
     mounted() {
-        this.prof = JSON.parse(this.profile);
 
-        axios.get('/notifications').then(rsp=>{
-            this.notifications = rsp.data;
-        })
+
 
     }
 }
