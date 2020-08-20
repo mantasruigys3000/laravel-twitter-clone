@@ -1,14 +1,19 @@
 <template>
     <div>
-        THIS IS HOME
-
-        <router-link :to="{name:'profile'}" > PROFILE</router-link>
-
+        <post-input></post-input>
+        <postfeeds :profile="user" type="dashboard"></postfeeds>
     </div>
 </template>
 
 <script>
 export default {
-name: "home"
+name: "home",
+
+
+    props:{
+    user:{
+
+    },
+    }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
-    <div class="mx-auto">
+    <div class="mx-auto shadow-md max-w-md ">
         <div v-for="post in this.posts">
-            <div class="flex flex-col align-baseline">
+            <div class="flex flex-col align-baseline shadow-md rouded-md mt-4">
                 <div class="flex flex-row align-top mx-auto rounded-md items-top mb-8">
                     <img class=" rounded-full w-16 h-16 object-cover mr-4" :src="post.picture" alt="">
                     <div class="   ">
@@ -74,19 +74,9 @@ export default {
 
                 })
             }else if(this.type == "dashboard"){
-        /*
-                profiles.push(JSON.parse(this.auth_user).id);
-                JSON.parse(this.profilearr).forEach(follow =>{
-                    profiles.push(follow.pivot.follow_id);
-                });
-
-                data.append('profiles',JSON.stringify(profiles));
-                axios.post('/posts',data).then(rsp=>{
-                    this.posts = rsp.data.data;
-
+                axios.get('/posts').then(rsp=>{
+                    this.posts = rsp.data.data
                 })
-                */
-
 
             }
         },

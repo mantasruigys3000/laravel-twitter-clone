@@ -28,7 +28,8 @@
             <div class="pb-2 mb-4">
                 <button @click="editing = true" v-if="user.id === profile.id && !editing" class="hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold" >Edit Profile</button>
                 <button @click="editing = false; editProfile()" v-if="user.id === profile.id && editing" class="hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold" >Submit</button>
-                <button v-if="user.id !== profile.id" class="hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold" >Follow</button>
+                <button @click="followToggle()" v-if="user.id !== profile.id" class="hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold" >
+                    {{ (this.isFollowing)? 'Unfollow':'Follow' }}</button>
             </div>
         </div>
 
@@ -56,6 +57,8 @@ export default {
             },
             profile: null,
             editing: false,
+            isFollowing: false,
+
 
 
         }
@@ -68,11 +71,20 @@ export default {
 
     methods:{
       getProfile(){
-            axios.get('/users/getuser/' + this.$route.params.userid).then(rsp=>{
+            axios.get('/users/getuser/' + this.$route.params.username).then(rsp=>{
                 this.profile = rsp.data.data;
                 this.profileEdit.bio = this.profile.bio
 
+                axios.get('/users/isFollowing/'+this.profile.id).then(rsp=>{
+                    this.isFollowing=rsp.data;
+
+                })
+
             });
+
+
+
+
         },
 
         editProfile(){
@@ -93,6 +105,12 @@ export default {
         changeImage(event){
           this.profileEdit.picture = event.target.files[0];
 
+        },
+
+        followToggle(){
+            axios.post('/users/follow/' + this.profile.id).then(rsp=>{
+                this.isFollowing = !this.isFollowing;
+            })
         }
     },
 

@@ -5,8 +5,8 @@
 
         <div class=" absolute overflow-scroll h-32 bg-red-500 w-40" v-if="searchLen > 0" >
             <div  class=" relative " v-for="profile in this.profiles" >
-                <img class=" inline-block w-8 h-8 rounded-full" :src="profile.profile_picture_link" alt="">
-                <a class="inline-block bg-red-500" :href=" '/profile/' + profile.username ">{{profile.username}}</a>
+                <img class=" inline-block w-8 h-8 rounded-full" :src="profile.profile_picture" alt="">
+                <router-link class="inline-block bg-red-500" :to=" '/profile/' + profile.username ">{{profile.username}}</router-link>
             </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Follow;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\UserResource;
@@ -13,8 +14,8 @@ class UserController extends Controller
 {
     //
     public function index(Request $request){
-            $user =  User::where('username','like','%'.$request->get('search').'%')->get();
-            return new UserResource($user);
+            $user =  UserResource::collection( User::where('username','like','%'.$request->get('search').'%')->get());
+            return $user;
 
     }
 
@@ -55,5 +56,38 @@ class UserController extends Controller
 
     }
 
+    public function getFollowingPosts(){
+        if(auth()->check()){
+
+        }
+    }
+
+    public function toggleLike(){
+
+    }
+
+    public function isFollowing(User $user){
+       // dd(auth()->user()->follows);
+        return auth()->user()->follows->contains($user);
+
+    }
+
+    public function toggleFollow(User $user){
+
+        $follow = new Follow();
+
+        if($this->isFollowing($user)){
+            $follow = Follow::where(['user_id' => auth()->user()->id ,'follow_id' => $user->id])->FirstOrFail();
+            $follow->delete();
+        }else{
+            $follow->user_id = auth()->user()->id;
+            $follow->follow_id = $user->id;
+            $follow->save();
+        }
+
+
+
+
+    }
 
 }

@@ -2116,10 +2116,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "home"
+  name: "home",
+  props: {
+    user: {}
+  }
 });
 
 /***/ }),
@@ -2195,16 +2196,9 @@ __webpack_require__.r(__webpack_exports__);
           _this.posts = rsp.data.data;
         });
       } else if (this.type == "dashboard") {
-        /*
-                profiles.push(JSON.parse(this.auth_user).id);
-                JSON.parse(this.profilearr).forEach(follow =>{
-                    profiles.push(follow.pivot.follow_id);
-                });
-                 data.append('profiles',JSON.stringify(profiles));
-                axios.post('/posts',data).then(rsp=>{
-                    this.posts = rsp.data.data;
-                 })
-                */
+        axios.get('/posts').then(function (rsp) {
+          _this.posts = rsp.data.data;
+        });
       }
     },
     likePost: function likePost(post) {
@@ -2274,6 +2268,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "profile",
   data: function data() {
@@ -2283,7 +2278,8 @@ __webpack_require__.r(__webpack_exports__);
         bio: ''
       },
       profile: null,
-      editing: false
+      editing: false,
+      isFollowing: false
     };
   },
   mounted: function mounted() {
@@ -2293,9 +2289,12 @@ __webpack_require__.r(__webpack_exports__);
     getProfile: function getProfile() {
       var _this = this;
 
-      axios.get('/users/getuser/' + this.$route.params.userid).then(function (rsp) {
+      axios.get('/users/getuser/' + this.$route.params.username).then(function (rsp) {
         _this.profile = rsp.data.data;
         _this.profileEdit.bio = _this.profile.bio;
+        axios.get('/users/isFollowing/' + _this.profile.id).then(function (rsp) {
+          _this.isFollowing = rsp.data;
+        });
       });
     },
     editProfile: function editProfile() {
@@ -2310,6 +2309,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeImage: function changeImage(event) {
       this.profileEdit.picture = event.target.files[0];
+    },
+    followToggle: function followToggle() {
+      var _this2 = this;
+
+      axios.post('/users/follow/' + this.profile.id).then(function (rsp) {
+        _this2.isFollowing = !_this2.isFollowing;
+      });
     }
   },
   props: {
@@ -20376,7 +20382,9 @@ var render = function() {
             "router-link",
             {
               staticClass: "px-4 font-bold",
-              attrs: { to: { name: "profile" } }
+              attrs: {
+                to: { name: "profile", params: { username: _vm.user.username } }
+              }
             },
             [_vm._v(" Profile")]
           )
@@ -20495,10 +20503,9 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._v("\n    THIS IS HOME\n\n    "),
-      _c("router-link", { attrs: { to: { name: "profile" } } }, [
-        _vm._v(" PROFILE")
-      ])
+      _c("post-input"),
+      _vm._v(" "),
+      _c("postfeeds", { attrs: { profile: _vm.user, type: "dashboard" } })
     ],
     1
   )
@@ -20527,71 +20534,77 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "mx-auto" },
+    { staticClass: "mx-auto shadow-md max-w-md " },
     _vm._l(this.posts, function(post) {
       return _c("div", [
-        _c("div", { staticClass: "flex flex-col align-baseline" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "flex flex-row align-top mx-auto rounded-md items-top mb-8"
-            },
-            [
-              _c("img", {
-                staticClass: " rounded-full w-16 h-16 object-cover mr-4",
-                attrs: { src: post.picture, alt: "" }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "   " },
-                [
-                  _c(
-                    "RouterLink",
-                    { attrs: { to: "/profile/" + post.username } },
-                    [_c("b", [_c("i", [_vm._v(_vm._s(post.username))])])]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "p",
-                    {
-                      staticClass:
-                        " w-64  min-w-64 text-wrap overflow-hidden break-all "
-                    },
-                    [_vm._v(_vm._s(post.content))]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "flex lex-row align-middle items-center" },
-                    [
-                      _c("p", { staticClass: "pr-4" }, [
-                        _vm._v("Likes: " + _vm._s(post.likescount))
-                      ]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("Shares: " + _vm._s(0))])
-                    ]
-                  )
-                ],
-                1
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "text-blue-500",
-              on: {
-                click: function($event) {
-                  return _vm.likePost(post)
+        _c(
+          "div",
+          {
+            staticClass: "flex flex-col align-baseline shadow-md rouded-md mt-4"
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex flex-row align-top mx-auto rounded-md items-top mb-8"
+              },
+              [
+                _c("img", {
+                  staticClass: " rounded-full w-16 h-16 object-cover mr-4",
+                  attrs: { src: post.picture, alt: "" }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "   " },
+                  [
+                    _c(
+                      "RouterLink",
+                      { attrs: { to: "/profile/" + post.username } },
+                      [_c("b", [_c("i", [_vm._v(_vm._s(post.username))])])]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "p",
+                      {
+                        staticClass:
+                          " w-64  min-w-64 text-wrap overflow-hidden break-all "
+                      },
+                      [_vm._v(_vm._s(post.content))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex lex-row align-middle items-center" },
+                      [
+                        _c("p", { staticClass: "pr-4" }, [
+                          _vm._v("Likes: " + _vm._s(post.likescount))
+                        ]),
+                        _vm._v(" "),
+                        _c("p", [_vm._v("Shares: " + _vm._s(0))])
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "text-blue-500",
+                on: {
+                  click: function($event) {
+                    return _vm.likePost(post)
+                  }
                 }
-              }
-            },
-            [_vm._v(" " + _vm._s(post.isLiked ? "Unlike" : "Like") + " ")]
-          )
-        ])
+              },
+              [_vm._v(" " + _vm._s(post.isLiked ? "Unlike" : "Like") + " ")]
+            )
+          ]
+        )
       ])
     }),
     0
@@ -20736,9 +20749,19 @@ var render = function() {
                   "button",
                   {
                     staticClass:
-                      "hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold"
+                      "hover:bg-red-500 bg-red-700 px-1 mr-1 rounded-full font-bold",
+                    on: {
+                      click: function($event) {
+                        return _vm.followToggle()
+                      }
+                    }
                   },
-                  [_vm._v("Follow")]
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(this.isFollowing ? "Unfollow" : "Follow")
+                    )
+                  ]
                 )
               : _vm._e()
           ])
@@ -21000,21 +21023,26 @@ var render = function() {
             "div",
             { staticClass: " absolute overflow-scroll h-32 bg-red-500 w-40" },
             _vm._l(this.profiles, function(profile) {
-              return _c("div", { staticClass: " relative " }, [
-                _c("img", {
-                  staticClass: " inline-block w-8 h-8 rounded-full",
-                  attrs: { src: profile.profile_picture_link, alt: "" }
-                }),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "inline-block bg-red-500",
-                    attrs: { href: "/profile/" + profile.username }
-                  },
-                  [_vm._v(_vm._s(profile.username))]
-                )
-              ])
+              return _c(
+                "div",
+                { staticClass: " relative " },
+                [
+                  _c("img", {
+                    staticClass: " inline-block w-8 h-8 rounded-full",
+                    attrs: { src: profile.profile_picture, alt: "" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "inline-block bg-red-500",
+                      attrs: { to: "/profile/" + profile.username }
+                    },
+                    [_vm._v(_vm._s(profile.username))]
+                  )
+                ],
+                1
+              )
             }),
             0
           )
@@ -36351,7 +36379,7 @@ var routes = [{
   name: 'home',
   component: __webpack_require__(/*! ./components/home */ "./resources/js/components/home.vue")["default"]
 }, {
-  path: '/profile/:userid?',
+  path: '/profile/:username?',
   name: 'profile',
   component: __webpack_require__(/*! ./components/profile */ "./resources/js/components/profile.vue")["default"]
 }];

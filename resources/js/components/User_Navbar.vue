@@ -2,7 +2,7 @@
     <div class="w-full bg-red-500 flex flex-row align-center p-2  shadow-lg justify-center text-white font-bold">
         <div >
             <router-link class="px-4 font-bold" :to="{name:'home'}"> Home</router-link>
-            <router-link class="px-4 font-bold" :to="{name:'profile'}" > Profile</router-link>
+            <router-link class="px-4 font-bold" :to="{name:'profile', params:{username:user.username}}" > Profile</router-link>
 
         </div>
         <div>
