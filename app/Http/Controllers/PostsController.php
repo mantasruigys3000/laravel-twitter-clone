@@ -23,7 +23,7 @@ class PostsController extends Controller
     {
         $post = new Post();
         $post->content = $request->get('content');
-        $post->user_id = auth()->user()->profile->id;
+        $post->user_id = auth()->user()->id;
         $post->save();
 
         return new PostResource($post);

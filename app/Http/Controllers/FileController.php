@@ -42,14 +42,22 @@ class FileController extends Controller
 
 
         $file = new File();
-        $gotFile = $request->file('file');
-        $path = '/images/' . $gotFile->getFilename() .'.' . $gotFile->extension();
-        $gotFile->storeAs('public/images',$gotFile->getFilename() .'.' . $gotFile->extension());
-        $file->url = public_path($path);
-        $file->link = $path;
 
-        $file->name = $gotFile->getFilename();
-        $file->save();
+        if($request->file('file') != null){
+            $gotFile = $request->file('file');
+            $path = '/images/' . $gotFile->getFilename() .'.' . $gotFile->extension();
+            $gotFile->storeAs('public/images',$gotFile->getFilename() .'.' . $gotFile->extension());
+            $file->url = public_path($path);
+            $file->link = $path;
+
+            $file->name = $gotFile->getFilename();
+            $file->save();
+        }else{
+            $file = null;
+
+        }
+
+
         return($file);
 
 

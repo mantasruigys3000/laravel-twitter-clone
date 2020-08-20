@@ -5,7 +5,8 @@
                 <div class="flex flex-row align-top mx-auto rounded-md items-top mb-8">
                     <img class=" rounded-full w-16 h-16 object-cover mr-4" :src="post.picture" alt="">
                     <div class="   ">
-                        <a class="" :href=" '/profile/'+post.username "> <b><i>{{ post.username }}</i></b></a>
+<!--                        <a class="" :href=" '/profile/'+post.username "> <b><i>{{ post.username }}</i></b></a>-->
+                        <RouterLink class="" :to=" '/profile/'+post.username "> <b><i>{{ post.username }}</i></b></RouterLink>
                         <p class=" w-64  min-w-64 text-wrap overflow-hidden break-all ">{{ post.content }}</p>
 
 
@@ -41,7 +42,7 @@ export default {
 
     data(){
         return{
-            profile: null,
+
             posts: [],
 
 
@@ -54,6 +55,7 @@ export default {
             required: true,
             type: String,
         },
+        profile: null,
 
         auth_user: null,
 
@@ -63,19 +65,16 @@ export default {
     methods: {
 
         getPosts(){
-            let profiles = ['0'];
-            let data = new FormData;
 
 
             if(this.type === "profile"){
-                profiles.push(this.profilearr);
-                data.append('profiles',JSON.stringify(profiles));
-                axios.post('/posts',data).then(rsp=>{
+
+                axios.get('/posts/' + this.profile.id).then(rsp=>{
                     this.posts = rsp.data.data;
 
                 })
             }else if(this.type == "dashboard"){
-
+        /*
                 profiles.push(JSON.parse(this.auth_user).id);
                 JSON.parse(this.profilearr).forEach(follow =>{
                     profiles.push(follow.pivot.follow_id);
@@ -86,7 +85,7 @@ export default {
                     this.posts = rsp.data.data;
 
                 })
-
+                */
 
 
             }

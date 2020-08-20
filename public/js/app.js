@@ -1971,7 +1971,8 @@ __webpack_require__.r(__webpack_exports__);
       post: {
         content: null
       },
-      posts: []
+      posts: [],
+      profile: null
     };
   },
   methods: {
@@ -1982,9 +1983,18 @@ __webpack_require__.r(__webpack_exports__);
         _this.posts.unshift(rsp.data.data);
       });
       window.location.reload();
+    },
+    getAuthProfile: function getAuthProfile() {
+      var _this2 = this;
+
+      axios.get('/users/getAuthUser/').then(function (rsp) {
+        _this2.profile = rsp.data.data;
+      });
     }
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.getAuthProfile();
+  },
   props: {
     user: {}
   }
@@ -2159,11 +2169,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "postfeed",
   data: function data() {
     return {
-      profile: null,
       posts: []
     };
   },
@@ -2173,30 +2183,28 @@ __webpack_require__.r(__webpack_exports__);
       required: true,
       type: String
     },
+    profile: null,
     auth_user: null
   },
   methods: {
     getPosts: function getPosts() {
       var _this = this;
 
-      var profiles = ['0'];
-      var data = new FormData();
-
       if (this.type === "profile") {
-        profiles.push(this.profilearr);
-        data.append('profiles', JSON.stringify(profiles));
-        axios.post('/posts', data).then(function (rsp) {
+        axios.get('/posts/' + this.profile.id).then(function (rsp) {
           _this.posts = rsp.data.data;
         });
       } else if (this.type == "dashboard") {
-        profiles.push(JSON.parse(this.auth_user).id);
-        JSON.parse(this.profilearr).forEach(function (follow) {
-          profiles.push(follow.pivot.follow_id);
-        });
-        data.append('profiles', JSON.stringify(profiles));
-        axios.post('/posts', data).then(function (rsp) {
-          _this.posts = rsp.data.data;
-        });
+        /*
+                profiles.push(JSON.parse(this.auth_user).id);
+                JSON.parse(this.profilearr).forEach(follow =>{
+                    profiles.push(follow.pivot.follow_id);
+                });
+                 data.append('profiles',JSON.stringify(profiles));
+                axios.post('/posts',data).then(rsp=>{
+                    this.posts = rsp.data.data;
+                 })
+                */
       }
     },
     likePost: function likePost(post) {
@@ -2286,18 +2294,22 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/users/getuser/' + this.$route.params.userid).then(function (rsp) {
-        _this.profile = rsp.data;
+        _this.profile = rsp.data.data;
         _this.profileEdit.bio = _this.profile.bio;
       });
     },
     editProfile: function editProfile() {
       var data = new FormData();
       data.append('bio', this.profileEdit.bio);
-      data.append('file', this.profile.picture);
+      data.append('file', this.profileEdit.picture);
       axios.post('/i/uploadImg', data).then(function (rsp) {
-        data.append('pic', rsp.data.id);
+        data.append('pic', rsp.data);
         return axios.post('/users/editbio', data);
       }).then(function (rsp) {});
+      this.profile.bio = this.profileEdit.bio;
+    },
+    changeImage: function changeImage(event) {
+      this.profileEdit.picture = event.target.files[0];
     }
   },
   props: {
@@ -20258,7 +20270,7 @@ var render = function() {
       _c("div", { staticClass: "flex flex-row" }, [
         _c("img", {
           staticClass: "w-16 h-16 rounded-full object-cover",
-          attrs: { src: "/images/default_pp.png", alt: "" }
+          attrs: { src: _vm.profile.profile_picture, alt: "" }
         }),
         _vm._v(" "),
         _c("div", { staticClass: "flex-col w-full" }, [
@@ -20268,7 +20280,7 @@ var render = function() {
               staticClass:
                 "bg-red-600 w-full text-white font-bold text-center shadow-sm rounded-md"
             },
-            [_vm._v(_vm._s(_vm.user.username))]
+            [_vm._v(_vm._s(_vm.profile.username))]
           ),
           _vm._v(" "),
           _c(
@@ -20531,32 +20543,39 @@ var render = function() {
                 attrs: { src: post.picture, alt: "" }
               }),
               _vm._v(" "),
-              _c("div", { staticClass: "   " }, [
-                _c("a", { attrs: { href: "/profile/" + post.username } }, [
-                  _c("b", [_c("i", [_vm._v(_vm._s(post.username))])])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  {
-                    staticClass:
-                      " w-64  min-w-64 text-wrap overflow-hidden break-all "
-                  },
-                  [_vm._v(_vm._s(post.content))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "flex lex-row align-middle items-center" },
-                  [
-                    _c("p", { staticClass: "pr-4" }, [
-                      _vm._v("Likes: " + _vm._s(post.likescount))
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("Shares: " + _vm._s(0))])
-                  ]
-                )
-              ])
+              _c(
+                "div",
+                { staticClass: "   " },
+                [
+                  _c(
+                    "RouterLink",
+                    { attrs: { to: "/profile/" + post.username } },
+                    [_c("b", [_c("i", [_vm._v(_vm._s(post.username))])])]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    {
+                      staticClass:
+                        " w-64  min-w-64 text-wrap overflow-hidden break-all "
+                    },
+                    [_vm._v(_vm._s(post.content))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "flex lex-row align-middle items-center" },
+                    [
+                      _c("p", { staticClass: "pr-4" }, [
+                        _vm._v("Likes: " + _vm._s(post.likescount))
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Shares: " + _vm._s(0))])
+                    ]
+                  )
+                ],
+                1
+              )
             ]
           ),
           _vm._v(" "),
@@ -20619,28 +20638,29 @@ var render = function() {
               ? _c("img", {
                   staticClass:
                     "  mr-4 align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 ",
-                  attrs: { alt: "", src: " /images/default_pp.png " }
+                  attrs: { alt: "", src: _vm.profile.profile_picture }
                 })
               : _vm._e(),
             _vm._v(" "),
-            _c("div", [
-              _c("label", { attrs: { for: "" } }, [
-                _vm.editing
-                  ? _c("img", {
-                      staticClass:
-                        "  mr-4 align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 ",
-                      attrs: { alt: "", src: " /images/default_pp.png " }
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.editing
-                  ? _c("input", {
-                      staticClass: "hidden ",
-                      attrs: { type: "file" }
-                    })
-                  : _vm._e()
-              ])
-            ]),
+            _vm.editing
+              ? _c("label", { staticClass: "w-full" }, [
+                  _vm.editing
+                    ? _c("img", {
+                        staticClass:
+                          " hover:opacity-75 mr-4 align-middle object-cover h-48 w-48 mx-auto  rounded-full border-red-500 border-solid border-2 ",
+                        attrs: { alt: "", src: _vm.profile.profile_picture }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.editing
+                    ? _c("input", {
+                        staticClass: " hidden",
+                        attrs: { type: "file" },
+                        on: { change: _vm.changeImage }
+                      })
+                    : _vm._e()
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("div", { staticClass: "flex flex-col justify-between" }, [
               !_vm.editing
@@ -20659,7 +20679,8 @@ var render = function() {
                         expression: "profileEdit.bio"
                       }
                     ],
-                    staticClass: "text-black text-left ",
+                    staticClass:
+                      " font-bold text-black text-left float-right resize-none  ",
                     domProps: { value: _vm.profileEdit.bio },
                     on: {
                       input: function($event) {
@@ -20702,6 +20723,7 @@ var render = function() {
                     on: {
                       click: function($event) {
                         _vm.editing = false
+                        _vm.editProfile()
                       }
                     }
                   },
@@ -20723,7 +20745,9 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c("post-input", { attrs: { user: _vm.user } })
+      _c("post-input", { attrs: { user: _vm.user } }),
+      _vm._v(" "),
+      _c("postfeed", { attrs: { type: "profile", profile: _vm.profile } })
     ],
     1
   )

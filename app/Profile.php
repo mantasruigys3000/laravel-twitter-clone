@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     //
-
+    /*
     public function picture(){
         return $this->hasOne(File::class,'id','profile_picture');
 
@@ -34,6 +34,9 @@ class Profile extends Model
         return $this->hasMany(Notification::class,'profile_id');
 
     }
+
+    */
+
 
 
 

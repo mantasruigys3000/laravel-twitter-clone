@@ -34,6 +34,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 //users
 Route::get('/users/getuser/{username}','UserController@show');
+Route::get('/users/getAuthUser','UserController@authUser');
 Route::post('/users/editbio','UserController@update');
 Route::post('/users/profiles','UserController@index');
 
@@ -59,8 +60,11 @@ Route::group(['middleware' =>  'auth'],function(){
 
 
 //posts
-Route::post('/post','PostsController@store');
+Route::get('/posts/{user}','UserController@getPosts');
+
+
 Route::post('/posts','PostsController@index');
+Route::post('/post','PostsController@store');
 Route::get('/post/{postid}','PostsController@show');
 Route::get('/status/{postid}',function($postid){
     return view('status',['postid' =>$postid]);

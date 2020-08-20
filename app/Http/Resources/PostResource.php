@@ -16,8 +16,8 @@ class PostResource extends JsonResource
     {
         $pp = ($this->user->picture == null)? '/images/default_pp.png': $this->user->picture->link;
         $isLiked = false;
-        if(auth()->user() != null){
-            $isLiked =  auth()->user()->profile->likes->contains($this->id);
+        if(auth()->check()){
+            $isLiked =  auth()->user()->likes->contains($this->id);
         }
 
         return [
