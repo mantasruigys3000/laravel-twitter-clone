@@ -6,6 +6,7 @@ use App\Follow;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\UserResource;
+use App\Post;
 use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
@@ -58,8 +59,20 @@ class UserController extends Controller
 
     public function getFollowingPosts(){
         if(auth()->check()){
+            $users = auth()->user()->follows->pluck('id');
+            $posts = PostResource::collection(Post::whereIn('user_id',$users)->get());
+            $userPosts = $this->getPosts(auth()->user());
 
+
+
+
+
+
+
+            return $posts->merge($userPosts)->sortByDesc('created_at');
         }
+
+        return null;
     }
 
     public function toggleLike(){

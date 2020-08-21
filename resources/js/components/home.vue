@@ -1,7 +1,7 @@
 <template>
     <div>
         <post-input></post-input>
-        <postfeeds :profile="user" type="dashboard"></postfeeds>
+        <postfeed :profile="user" type="dashboard"></postfeed>
     </div>
 </template>
 

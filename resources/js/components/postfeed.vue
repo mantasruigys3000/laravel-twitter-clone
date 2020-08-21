@@ -13,7 +13,10 @@
                         <div class="flex lex-row align-middle items-center">
                             <p class="pr-4">Likes: {{post.likescount}}</p>
                             <p>Shares: {{0}}</p>
+                        </div>
 
+                        <div>
+                            <p>Created at {{post.created_at}}</p>
                         </div>
 
                     </div>
@@ -75,7 +78,7 @@ export default {
                 })
             }else if(this.type == "dashboard"){
                 axios.get('/posts').then(rsp=>{
-                    this.posts = rsp.data.data
+                    this.posts = rsp.data
                 })
 
             }
@@ -95,7 +98,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

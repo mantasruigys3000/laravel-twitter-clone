@@ -43,6 +43,7 @@ Vue.component('main-app', require('./components/app.vue').default);
 const routes = [
     {path: '/', name: 'home', component: require('./components/home').default},
     {path: '/profile/:username?', name: 'profile', component: require('./components/profile').default},
+    {path: '/search/:q?', name: 'search', component: require('./components/searchPage').default},
 
 ]
 

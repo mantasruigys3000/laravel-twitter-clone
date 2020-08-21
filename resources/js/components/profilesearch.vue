@@ -1,7 +1,7 @@
 <template>
 <div>
     <div>
-        <input class="w-40 text-black" type="text" v-model="search" placeholder="search">
+        <input @keyup.enter="gotoSearch" class="w-40 text-black" type="text" v-model="search" placeholder="search">
 
         <div class=" absolute overflow-scroll h-32 bg-red-500 w-40" v-if="searchLen > 0" >
             <div  class=" relative " v-for="profile in this.profiles" >
@@ -25,7 +25,14 @@ export default {
         }
     },
     methods:{
+        gotoSearch(){
 
+                console.log('enter hit ');
+                this.$router.push({name: 'search',params:{q:this.search}});
+                this.$router.go();
+                
+
+        }
 
 
     },

@@ -23,7 +23,7 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'content' => $this->content,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('H:i:s d/m/y'),
             'username'=> $this->user->username,
             'posterId'=> $this->user->id,
             'picture' => $pp,

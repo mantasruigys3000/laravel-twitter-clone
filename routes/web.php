@@ -38,6 +38,10 @@ Route::get('/users/getAuthUser','UserController@authUser');
 Route::post('/users/editbio','UserController@update');
 Route::post('/users/profiles','UserController@index');
 
+//search
+
+Route::post('/searchAll','SearchController@index');
+
 //follows
 Route::get('/users/isFollowing/{user}','UserController@isFollowing');
 Route::post('/users/startfollowing','FollowController@store');
@@ -65,7 +69,7 @@ Route::group(['middleware' =>  'auth'],function(){
 Route::get('/posts/{user}','UserController@getPosts');
 
 
-Route::post('/posts','UserController@getFollowingPosts');
+Route::get('/posts','UserController@getFollowingPosts');
 Route::post('/post','PostsController@store');
 Route::get('/post/{postid}','PostsController@show');
 Route::get('/status/{postid}',function($postid){
